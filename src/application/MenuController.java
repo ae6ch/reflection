@@ -11,22 +11,32 @@ import javafx.scene.control.Control;
 import javafx.stage.Stage;
 
 /**
- * javafx controller for for resetpw.fxml
+ * javafx controller for for mainmenu.fxml
  * 
  * @author Steve Rubin
  */
-public class ResetPasswordController {
-
+public class MenuController {
    /** 
     * Event handler for any buttons
     * 
     * @param e event
     */
- public void buttonPressed(Event e) {
+   public void buttonPressed(Event e) {
       switch (((Control) e.getSource()).getId()) {
-         case "changePasswordButton": // Change Password Button
+         case "quit":  // Quit Button
+            System.out.println("quit!");       
+            System.exit(1);
+         case "search": // Search Button
+            System.out.println("search");
+            changeScene(e, "search.fxml");
+            break;
+         case "newJournalEntry": // New Journal Entry Button
+            System.out.println("newjournalentry");
+            changeScene(e, "journalentry.fxml");
+            break;
+         case "changePassword": // Change Password Button
             System.out.println("changepw");
-            changeScene(e, "login.fxml");
+            changeScene(e, "resetpw.fxml");
             break;
          default:
             System.out.printf("unknown event: %s\n", ((Control) e.getSource()).getId());
@@ -35,13 +45,12 @@ public class ResetPasswordController {
       }
    }
 
-
    /**
     * Change the scene
     * @param e Event where we can get the stage from
     * @param fxml fxml file of new scene
     */
-      private void changeScene(Event e, String fxml) {
+   private void changeScene(Event e, String fxml) {
       try {
          Parent root = FXMLLoader.load(getClass().getResource(fxml));
          Scene scene = new Scene(root, 640, 480);
@@ -52,4 +61,5 @@ public class ResetPasswordController {
 
       }
    }
+
 }
