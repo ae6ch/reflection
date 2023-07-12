@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-    <classpathentry kind="lib" path="lib/sqlite-jdbc-3.42.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/sqlite-jdbc-3.42.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/jfoenix-8.0.10.jar" sourcepath="/Users/ser/.m2/repository/com/jfoenix/jfoenix/8.0.10/jfoenix-8.0.10-sources.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
