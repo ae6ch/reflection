@@ -1,6 +1,10 @@
 package application;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -17,9 +21,46 @@ import javafx.stage.Stage;
  * @author Steve Rubin
  */
 public class LoginController {
+   Database db;
+   boolean firstlaunch = false;
 
    @FXML
    TextField passwordField;
+
+   public LoginController() {
+      System.out.println("LoginController constructor called");
+      db = new Database();
+
+      try {
+         Statement stmt = db.getConnection().createStatement();
+         String sql = "SELECT key,value FROM config";
+         ResultSet rs = stmt.executeQuery(sql);
+
+         while (rs.next()) {
+            String key = rs.getString("key");
+            String value = rs.getString("value");
+            System.out.println("key = " + key);
+            System.out.println("value = " + value);
+            if (key.equals("firstlaunch") && value.equals("1")) {
+               System.out.println("firstlaunch = " + firstlaunch);
+               firstlaunch = true;
+            }
+            System.out.println("firstlaunch = " + firstlaunch);
+         }
+         stmt.close();
+
+         if (firstlaunch) {
+            System.out.println("First launch detected, please change your password");
+         } else {
+            System.out.println("Not our first time launching, please enter your password");
+
+         }
+      } catch (SQLException e) {
+         System.err.println(e.getClass().getName() + ": " + e.getMessage());
+         System.exit(0);
+      }
+
+   }
 
    /**
     * Event handler for the Login button*
@@ -29,18 +70,43 @@ public class LoginController {
 
    public void loginButtonPressed(Event e) {
       System.out.printf("Login button pressed, with Password of %s\n", passwordField.getText());
-      if (passwordField.getText().equals("p")) { // Hard Coded check for now to see if the password is the default
-         System.out.println("Entered the default password, switch to resetpw");
-         changeScene(e, "resetpw.fxml");
-      } else { // This is what would happen if they entered the right password. Lets assume if
-               // they dont enter "p" (default) its the right password.
-         changeScene(e, "mainmenu.fxml");
+      // get the password from the database table config, key=password
+      try {
+
+         PreparedStatement pstmt = db.getConnection()
+               .prepareStatement("SELECT value FROM config where key='password' and value = ?");
+         pstmt.setString(1, passwordField.getText());
+
+         ResultSet rs = pstmt.executeQuery();
+
+         if (rs.next()) {
+            System.out.println("Password is correct");
+            // see if firstlaunch is set to 1
+            // if so changeScene to resetpw.fxml
+            // else changeScene to mainmenu.fxml
+            if (firstlaunch) {
+               System.out.println("First launch detected, please change your password");
+               pstmt.close();
+               changeScene(e, "resetpw.fxml");
+            } else {
+               System.out.println("Not our first time launching, please enter your password");
+               pstmt.close();
+               changeScene(e, "mainmenu.fxml");
+            }
+         } else {
+            System.out.println("Password is incorrect");
+         }
+
+      } catch (SQLException sqle) {
+         System.err.println(sqle.getClass().getName() + ": " + sqle.getMessage());
+         System.exit(0);
       }
    }
 
    /**
     * Change the scene
-    * @param e Event where we can get the stage from
+    * 
+    * @param e    Event where we can get the stage from
     * @param fxml fxml file of new scene
     */
    private void changeScene(Event e, String fxml) {
@@ -54,7 +120,7 @@ public class LoginController {
 
       }
    }
-   
+
    /**
     * Event handler for the Login button*
     * 
