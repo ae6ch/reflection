@@ -41,7 +41,7 @@ public class LoginController {
             String value = rs.getString("value");
             System.out.println("key = " + key);
             System.out.println("value = " + value);
-            if (key.equals("firstlaunch") && value.equals("1")) {
+            if (key.equals("firstlaunch") && value.equals("1")) { // This firstlaunch thing is a bit hackish, sorry
                System.out.println("firstlaunch = " + firstlaunch);
                firstlaunch = true;
             }
