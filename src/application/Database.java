@@ -2,6 +2,12 @@ package application;
 
 import java.sql.*;
 
+/**
+ * Database class
+ * TODO: move lots of duplicated stuff here
+ * 
+ * @author Steve Rubin
+ */
 public class Database {
    Connection db = null;
 

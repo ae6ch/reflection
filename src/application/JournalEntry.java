@@ -1,9 +1,14 @@
 package application;
 
+
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
 /**
  * JournalEntry class
  * 
  * Contains a single journal entry (stored in the enries table)
+ * 
  * @author Steve Rubin
  */
 public class JournalEntry {
@@ -21,7 +26,7 @@ public class JournalEntry {
     * @param content content of the entry
     */
    public JournalEntry(int id, String date, String title, String content) {
-      this.id = id; 
+      this.id = id;
       this.date = date;
       this.title = title;
       this.content = content;
@@ -55,4 +60,9 @@ public class JournalEntry {
       return content;
    }
 
+   public long getTimeInSeconds() {
+      return LocalDateTime.parse(date).toEpochSecond(ZoneOffset.UTC);
+   }
+
+  
 }

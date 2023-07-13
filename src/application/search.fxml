@@ -20,13 +20,15 @@
             <TextField fx:id="textSearch" layoutX="22.0" layoutY="74.0" prefHeight="27.0" prefWidth="571.0" promptText="Free Form Text Search" />
             <Text layoutX="34.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Results" textAlignment="CENTER" wrappingWidth="571.0000038146973" />
             <Button fx:id="search" layoutX="444.0" layoutY="33.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="27.0" prefWidth="149.0" text="Search" />
-            <Button fx:id="cancel" layoutX="284.0" layoutY="359.0" mnemonicParsing="false" onAction="#buttonPressed" text="Cancel" />
+            <Button fx:id="cancel" layoutX="536.0" layoutY="359.0" mnemonicParsing="false" onAction="#buttonPressed" text="Cancel" />
             <TableView fx:id="resultsList" layoutX="21.0" layoutY="131.0" prefHeight="200.0" prefWidth="571.0">
               <columns>
                 <TableColumn fx:id="dateCol" prefWidth="211.0" text="Date/Time" />
                 <TableColumn fx:id="titleCol" prefWidth="359.0" text="Title" />
               </columns>
             </TableView>
+            <Button fx:id="edit" layoutX="176.0" layoutY="359.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="27.0" prefWidth="100.0" text="View/Edit" />
+            <Button fx:id="delete" layoutX="320.0" layoutY="359.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="27.0" prefWidth="100.0" text="Delete" />
          </children>
     </AnchorPane>
   </children>

@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTimePicker;
@@ -39,9 +41,43 @@ public class JournalEntryController {
 
    Database db;
 
+   static JournalEntry entryToEdit = null;
+
    public JournalEntryController() {
       System.out.println("JournalEntryController constructor called");
       db = new Database();
+
+   }
+
+   public void initialize() {
+      System.out.println("JournalEntryController initialize called");
+      if (entryToEdit != null) { // we are in edit mode
+         System.out.println("entryToEdit is not null is " + entryToEdit.getId());
+         titleField.setText(entryToEdit.getTitle());
+         bodyField.setHtmlText(entryToEdit.getContent());
+         System.out.printf(entryToEdit.getDate());
+         try {
+            dateStamp.setValue(LocalDate.parse(entryToEdit.getDate(), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+            timeStamp.setValue(LocalTime.parse(entryToEdit.getDate(), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+         } catch (DateTimeParseException dtpe) {
+            System.out.println("DateTimeParseException caught");
+            System.out.println(dtpe.getMessage());
+         }
+
+      } else { // new entry
+         dateStamp.setValue(LocalDate.now());
+         timeStamp.setValue(LocalTime.now());
+      }
+
+   }
+
+   /**
+    * Set the entry to edit next time this controller is called
+    * 
+    * @param entry entry to edit
+    */
+   public static void setEntryToEdit(JournalEntry entry) {
+      entryToEdit = entry;
    }
 
    /**
@@ -51,38 +87,14 @@ public class JournalEntryController {
     */
    public void buttonPressed(Event e) {
       switch (((Control) e.getSource()).getId()) {
-         case "save": // Save (with fall thru to cancel so it returns to mainmenu?)
-            // Do the stuff here to save
-            // Get the values from the fields
-            String title = titleField.getText();
-            String body = bodyField.getHtmlText();
-            LocalDate date = dateStamp.getValue();
-            LocalTime time = timeStamp.getValue();
-            LocalDateTime localDateTime = LocalDateTime.of(date, time);
-            System.out.println("Title: " + title);
-            System.out.println("Body: " + body);
-            long timeInSeconds = localDateTime.toEpochSecond(ZoneOffset.UTC);
-
-            System.out.println("DateTime: " + timeInSeconds);
-
-            // Save the values to the database
-            try {
-               PreparedStatement pstmt = null;
-               pstmt = db.getConnection()
-                     .prepareStatement("INSERT INTO entries (title, content, date) VALUES (?, ?, ?)");
-
-               pstmt.setString(1, title);
-               pstmt.setString(2, body);
-               pstmt.setLong(3, timeInSeconds);
-               pstmt.executeUpdate();
-               pstmt.close();
-
-            } catch (SQLException sqle) {
-               System.out.println("SQLException: " + sqle.getMessage());
-            } finally {
-            }
+         case "save":
+            storeEntry();
+            entryToEdit = null; // Clear entryToEdit
+            changeScene(e, "mainmenu.fxml");
+            break;
 
          case "cancel": // Change Password Button
+            entryToEdit = null; // Clear entryToEdit
             changeScene(e, "mainmenu.fxml");
             break;
 
@@ -90,6 +102,46 @@ public class JournalEntryController {
             System.out.printf("unknown event: %s\n", ((Control) e.getSource()).getId());
             break;
 
+      }
+   }
+
+   private void storeEntry() {
+      String title = titleField.getText();
+      String body = bodyField.getHtmlText();
+      LocalDate date = dateStamp.getValue();
+      LocalTime time = timeStamp.getValue();
+      LocalDateTime localDateTime = LocalDateTime.of(date, time);
+      System.out.println("Title: " + title);
+      System.out.println("Body: " + body);
+      long timeInSeconds = localDateTime.toEpochSecond(ZoneOffset.UTC);
+
+      System.out.println("DateTime: " + timeInSeconds);
+
+      // Save the values to the database
+      try {
+         PreparedStatement pstmt = null;
+         if (entryToEdit != null) { // Update existing entry - Should be an upsert for this entire block
+            pstmt = db.getConnection()
+                  .prepareStatement("UPDATE entries SET title = ?, content = ?, date = ? WHERE id = ?");
+            pstmt.setString(1, title);
+            pstmt.setString(2, body);
+            pstmt.setLong(3, timeInSeconds);
+            pstmt.setInt(4, entryToEdit.getId());
+            pstmt.executeUpdate();
+            pstmt.close();
+
+         } else {
+            pstmt = db.getConnection()
+                  .prepareStatement("INSERT INTO entries (title, content, date) VALUES (?, ?, ?)");
+            pstmt.setString(1, title);
+            pstmt.setString(2, body);
+            pstmt.setLong(3, timeInSeconds);
+            pstmt.executeUpdate();
+            pstmt.close();
+         }
+
+      } catch (SQLException sqle) {
+         System.out.println("SQLException: " + sqle.getMessage());
       }
    }
 

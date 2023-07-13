@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -47,6 +49,16 @@ public class SearchController {
       db = new Database();
    }
 
+   public void initialize() {
+      System.out.println("SearchController initialize called");
+      fromDate.setValue(LocalDate.parse("2023-01-01"));
+      toDate.setValue(LocalDate.now());
+      resultsList.getItems().setAll(search(fromDate.getValue().atStartOfDay(),
+                  toDate.getValue().atTime(23, 59, 59), textSearch.getText()));
+
+      resultsList.getItems().setAll(search(fromDate.getValue().atStartOfDay(), toDate.getValue().atTime(23, 59, 59), ""));
+   }
+
    /**
     * Event handler for any buttons
     * 
@@ -58,10 +70,28 @@ public class SearchController {
             resultsList.getItems().setAll(search(fromDate.getValue().atStartOfDay(),
                   toDate.getValue().atTime(23, 59, 59), textSearch.getText()));
             break;
-         case "cancel": // cancel
-            changeScene(e, "mainmenu.fxml");
+         case "edit": // edit
+            System.out.println("edit");
+            
+            System.out.println("tableView selection: " + resultsList.getSelectionModel().getSelectedItem().getId());
+
+            JournalEntryController.setEntryToEdit(resultsList.getSelectionModel().getSelectedItem());
+            changeScene(e, "journalentry.fxml");
+            
+            break;
+         case "delete": // delete
+            System.out.println("delete");
+                                 //JournalEntryController.setEntryToEdit(null);
+
+                                 //delete here  
             break;
 
+         case "cancel": // cancel
+                     System.out.println("cancel");
+                     JournalEntryController.setEntryToEdit(null);
+
+            changeScene(e, "mainmenu.fxml");
+            break;
          default:
             System.out.printf("unknown event: %s\n", ((Control) e.getSource()).getId());
             break;
@@ -96,6 +126,7 @@ public class SearchController {
 
          while (rs.next()) {
             int id = rs.getInt("id");
+            //LocalDateTime date = LocalDateTime.ofEpochSecond(rs.getLong("date"), 0, ZoneOffset.UTC);
             LocalDateTime date = LocalDateTime.ofEpochSecond(rs.getLong("date"), 0, ZoneOffset.UTC);
             String title = rs.getString("title");
             String content = rs.getString("content");

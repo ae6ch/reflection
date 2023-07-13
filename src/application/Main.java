@@ -5,7 +5,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+/**
+ * Most of this code needs to be moved to a Reflection class and shouldn't be here
+ * 
+ * @author Steve Rubin
+ */
 public class Main extends Application {
 
 	@Override
