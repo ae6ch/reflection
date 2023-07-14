@@ -54,9 +54,10 @@ public class SearchController {
       fromDate.setValue(LocalDate.parse("2023-01-01"));
       toDate.setValue(LocalDate.now());
       resultsList.getItems().setAll(search(fromDate.getValue().atStartOfDay(),
-                  toDate.getValue().atTime(23, 59, 59), textSearch.getText()));
+            toDate.getValue().atTime(23, 59, 59), textSearch.getText()));
 
-      resultsList.getItems().setAll(search(fromDate.getValue().atStartOfDay(), toDate.getValue().atTime(23, 59, 59), ""));
+      resultsList.getItems()
+            .setAll(search(fromDate.getValue().atStartOfDay(), toDate.getValue().atTime(23, 59, 59), ""));
    }
 
    /**
@@ -72,23 +73,35 @@ public class SearchController {
             break;
          case "edit": // edit
             System.out.println("edit");
-            
+
             System.out.println("tableView selection: " + resultsList.getSelectionModel().getSelectedItem().getId());
 
             JournalEntryController.setEntryToEdit(resultsList.getSelectionModel().getSelectedItem());
             changeScene(e, "journalentry.fxml");
-            
+
             break;
          case "delete": // delete
             System.out.println("delete");
-                                 //JournalEntryController.setEntryToEdit(null);
+            // JournalEntryController.setEntryToEdit(null);
+            System.out.println("tableView selection: " + resultsList.getSelectionModel().getSelectedItem().getId());
+            try {
+               PreparedStatement pstmt = db.getConnection()
+                     .prepareStatement("DELETE from entries where id = ?");
+               pstmt.setInt(1, resultsList.getSelectionModel().getSelectedItem().getId());
+               pstmt.executeUpdate();
+            } catch (SQLException sqle) {
+               System.err.println(sqle.getClass().getName() + ": " + sqle.getMessage());
+               System.exit(0);
+            }
 
-                                 //delete here  
+            resultsList.getItems().remove(resultsList.getSelectionModel().getSelectedItem());
+
+            // delete here
             break;
 
          case "cancel": // cancel
-                     System.out.println("cancel");
-                     JournalEntryController.setEntryToEdit(null);
+            System.out.println("cancel");
+            JournalEntryController.setEntryToEdit(null);
 
             changeScene(e, "mainmenu.fxml");
             break;
@@ -102,7 +115,7 @@ public class SearchController {
    /**
     * Search the database for entries matching the search criteria
     * TODO: move this to a Journal class?
-
+    * 
     * @param searchFromDateTime start date/time of search
     * @param searchToDateTime   end date/time of search
     * @param searchText         text to search for
@@ -126,7 +139,8 @@ public class SearchController {
 
          while (rs.next()) {
             int id = rs.getInt("id");
-            //LocalDateTime date = LocalDateTime.ofEpochSecond(rs.getLong("date"), 0, ZoneOffset.UTC);
+            // LocalDateTime date = LocalDateTime.ofEpochSecond(rs.getLong("date"), 0,
+            // ZoneOffset.UTC);
             LocalDateTime date = LocalDateTime.ofEpochSecond(rs.getLong("date"), 0, ZoneOffset.UTC);
             String title = rs.getString("title");
             String content = rs.getString("content");
