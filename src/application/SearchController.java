@@ -1,6 +1,5 @@
 package application;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -86,15 +85,7 @@ public class SearchController {
             
             if(resultsList.getSelectionModel().getSelectedItem() != null) {
             	System.out.println("tableView selection: " + resultsList.getSelectionModel().getSelectedItem().getId());
-            	try {
-            		PreparedStatement pstmt = db.getConnection()
-            				.prepareStatement("DELETE from entries where id = ?");
-            		pstmt.setInt(1, resultsList.getSelectionModel().getSelectedItem().getId());
-            		pstmt.executeUpdate();
-            	} catch (SQLException sqle) {
-            		System.err.println(sqle.getClass().getName() + ": " + sqle.getMessage());
-            		System.exit(0);
-            	}
+            	db.deleteEntry(resultsList.getSelectionModel().getSelectedItem().getId());
   
             	resultsList.getItems().remove(resultsList.getSelectionModel().getSelectedItem());
             }
@@ -133,51 +124,39 @@ public class SearchController {
       titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
       resultsList.getItems().clear();
       
-      try {
+      
     	  if(!searchText.isEmpty()) {
-    		  PreparedStatement pstmt = db.getConnection()
-                  .prepareStatement(
-                        "SELECT id,title,content,date FROM entries WHERE date BETWEEN ? AND ? OR content LIKE ? OR title LIKE ? ");
-    		  
-    		  //check whether there is selected date range for the search
-    		  if (searchFromDate != null && searchToDate != null) {
-    			  pstmt.setLong(1, searchFromDate.atStartOfDay().toEpochSecond(ZoneOffset.UTC));
-    			  pstmt.setLong(2, searchToDate.atTime(23, 59, 59).toEpochSecond(ZoneOffset.UTC));
-    		  }
-    		  
-    		  //searches title and content for substring
-    		  pstmt.setString(3, "%" + searchText + "%");
-    		  pstmt.setString(4, "%" + searchText + "%");
-    		  rs = pstmt.executeQuery();
-    		  entries = searchHelper(rs);
-    		  pstmt.close();
+    		  rs = db.searchEntries(searchFromDate, searchToDate, searchText);
+    		  entries = parseResultSet(rs);
+    		  System.out.println("search res");
     	  }
 
     	  else {
-    		  System.out.println("Please enter a valid search parameter");
+    		  System.out.println("Please enter a valid search parameter: must provide a substring");
     	  }
 
-      } catch (SQLException sqle) {
-         System.out.println("SQLException: " + sqle.getMessage());
-         System.out.println("SQLState: " + sqle.getSQLState());
-         System.out.println("VendorError: " + sqle.getErrorCode());
-      }
       return entries;
    }
    
-   private ArrayList<JournalEntry> searchHelper(ResultSet rs) throws SQLException{
+   private ArrayList<JournalEntry> parseResultSet(ResultSet rs){
 	   
 	   ArrayList<JournalEntry> entries = new ArrayList<JournalEntry>(); // Array to hold journal entries
 	   
-       while (rs != null && rs.next()) {
-           int id = rs.getInt("id");
-           // LocalDateTime date = LocalDateTime.ofEpochSecond(rs.getLong("date"), 0,
-           // ZoneOffset.UTC);
-           LocalDateTime date = LocalDateTime.ofEpochSecond(rs.getLong("date"), 0, ZoneOffset.UTC);
-           String title = rs.getString("title");
-           String content = rs.getString("content");
-           entries.add(new JournalEntry(id, date.toString(), title, content)); // Fill the array we will use for the                                                                      // table
-       } 
+	   try {
+		   while (rs != null && rs.next()) {
+			   int id = rs.getInt("id");
+			   // LocalDateTime date = LocalDateTime.ofEpochSecond(rs.getLong("date"), 0,
+			   // ZoneOffset.UTC);
+			   LocalDateTime date = LocalDateTime.ofEpochSecond(rs.getLong("date"), 0, ZoneOffset.UTC);
+			   String title = rs.getString("title");
+			   String content = rs.getString("content");
+			   entries.add(new JournalEntry(id, date.toString(), title, content)); // Fill the array we will use for the                                                                      // table
+		   }
+	   }catch (SQLException sqle) {
+	        System.out.println("SQLException: " + sqle.getMessage());
+	        System.out.println("SQLState: " + sqle.getSQLState());
+	        System.out.println("VendorError: " + sqle.getErrorCode());
+	     }
        
        return entries; 
    }

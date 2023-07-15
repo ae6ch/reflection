@@ -1,7 +1,5 @@
 package application;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -86,9 +84,14 @@ public class JournalEntryController {
    public void buttonPressed(Event e) {
       switch (((Control) e.getSource()).getId()) {
          case "save":
-            storeEntry();
-            entryToEdit = null; // Clear entryToEdit
-            control.changeScene(e, "mainmenu.fxml");
+        	 if (bodyField.getHtmlText().length() > 72) {
+        		 storeEntry();
+        		 entryToEdit = null; // Clear entryToEdit
+        		 control.changeScene(e, "mainmenu.fxml");
+        	 }
+        	 else {
+        		 System.out.println("Please enter journal content");
+        	 }
             break;
 
          case "cancel": // Change Password Button
@@ -114,32 +117,11 @@ public class JournalEntryController {
       long timeInSeconds = localDateTime.toEpochSecond(ZoneOffset.UTC);
 
       System.out.println("DateTime: " + timeInSeconds);
-
+      
       // Save the values to the database
-      try {
-         PreparedStatement pstmt = null;
-         if (entryToEdit != null) { // Update existing entry - Should be an upsert for this entire block
-            pstmt = db.getConnection()
-                  .prepareStatement("UPDATE entries SET title = ?, content = ?, date = ? WHERE id = ?");
-            pstmt.setString(1, title);
-            pstmt.setString(2, body);
-            pstmt.setLong(3, timeInSeconds);
-            pstmt.setInt(4, entryToEdit.getId());
-            pstmt.executeUpdate();
-            pstmt.close();
-
-         } else {
-            pstmt = db.getConnection()
-                  .prepareStatement("INSERT INTO entries (title, content, date) VALUES (?, ?, ?)");
-            pstmt.setString(1, title);
-            pstmt.setString(2, body);
-            pstmt.setLong(3, timeInSeconds);
-            pstmt.executeUpdate();
-            pstmt.close();
-         }
-
-      } catch (SQLException sqle) {
-         System.out.println("SQLException: " + sqle.getMessage());
-      }
+      if (entryToEdit != null) // Update existing entry - Should be an upsert for this entire block
+    	  db.updateEntry(entryToEdit.getId(), title, body, timeInSeconds);
+      else
+    	  db.insertEntry(title, body, timeInSeconds);
    }
 }
