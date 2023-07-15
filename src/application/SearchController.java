@@ -1,6 +1,5 @@
 package application;
 
-import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,17 +10,12 @@ import java.util.ArrayList;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 
 /**
  * javafx controller for for search.fxml
@@ -29,6 +23,7 @@ import javafx.stage.Stage;
  * @author Steve Rubin
  */
 public class SearchController {
+
    @FXML
    private DatePicker fromDate;
    @FXML
@@ -41,6 +36,9 @@ public class SearchController {
    TableColumn<JournalEntry, String> dateCol;
    @FXML
    TableColumn<JournalEntry, String> titleCol;
+   
+	@FXML
+	private SceneController control = new SceneController();
 
    Database db; // TODO: all the database stuff should be in the database class?
 
@@ -51,13 +49,13 @@ public class SearchController {
 
    public void initialize() {
       System.out.println("SearchController initialize called");
-      fromDate.setValue(LocalDate.parse("2023-01-01"));
-      toDate.setValue(LocalDate.now());
-      resultsList.getItems().setAll(search(fromDate.getValue().atStartOfDay(),
-            toDate.getValue().atTime(23, 59, 59), textSearch.getText()));
-
-      resultsList.getItems()
-            .setAll(search(fromDate.getValue().atStartOfDay(), toDate.getValue().atTime(23, 59, 59), ""));
+//      fromDate.setValue(LocalDate.parse("2023-01-01"));
+//      toDate.setValue(LocalDate.now());
+//      resultsList.getItems().setAll(search(fromDate.getValue().atStartOfDay(),
+//            toDate.getValue().atTime(23, 59, 59), textSearch.getText()));
+//
+//      resultsList.getItems()
+//            .setAll(search(fromDate.getValue().atStartOfDay(), toDate.getValue().atTime(23, 59, 59), ""));
    }
 
    /**
@@ -68,33 +66,38 @@ public class SearchController {
    public void buttonPressed(Event e) {
       switch (((Control) e.getSource()).getId()) {
          case "search": // search
-            resultsList.getItems().setAll(search(fromDate.getValue().atStartOfDay(),
-                  toDate.getValue().atTime(23, 59, 59), textSearch.getText()));
+  
+            resultsList.getItems().setAll(search(fromDate.getValue(),
+                  toDate.getValue(), textSearch.getText()));
             break;
          case "edit": // edit
             System.out.println("edit");
+            
+            if(resultsList.getSelectionModel().getSelectedItem() != null) {
+            	System.out.println("tableView selection: " + resultsList.getSelectionModel().getSelectedItem().getId());
 
-            System.out.println("tableView selection: " + resultsList.getSelectionModel().getSelectedItem().getId());
-
-            JournalEntryController.setEntryToEdit(resultsList.getSelectionModel().getSelectedItem());
-            changeScene(e, "journalentry.fxml");
+            	JournalEntryController.setEntryToEdit(resultsList.getSelectionModel().getSelectedItem());
+            	control.changeScene(e, "journalentry.fxml");
+            }
 
             break;
          case "delete": // delete
             System.out.println("delete");
-            // JournalEntryController.setEntryToEdit(null);
-            System.out.println("tableView selection: " + resultsList.getSelectionModel().getSelectedItem().getId());
-            try {
-               PreparedStatement pstmt = db.getConnection()
-                     .prepareStatement("DELETE from entries where id = ?");
-               pstmt.setInt(1, resultsList.getSelectionModel().getSelectedItem().getId());
-               pstmt.executeUpdate();
-            } catch (SQLException sqle) {
-               System.err.println(sqle.getClass().getName() + ": " + sqle.getMessage());
-               System.exit(0);
+            
+            if(resultsList.getSelectionModel().getSelectedItem() != null) {
+            	System.out.println("tableView selection: " + resultsList.getSelectionModel().getSelectedItem().getId());
+            	try {
+            		PreparedStatement pstmt = db.getConnection()
+            				.prepareStatement("DELETE from entries where id = ?");
+            		pstmt.setInt(1, resultsList.getSelectionModel().getSelectedItem().getId());
+            		pstmt.executeUpdate();
+            	} catch (SQLException sqle) {
+            		System.err.println(sqle.getClass().getName() + ": " + sqle.getMessage());
+            		System.exit(0);
+            	}
+  
+            	resultsList.getItems().remove(resultsList.getSelectionModel().getSelectedItem());
             }
-
-            resultsList.getItems().remove(resultsList.getSelectionModel().getSelectedItem());
 
             // delete here
             break;
@@ -103,7 +106,7 @@ public class SearchController {
             System.out.println("cancel");
             JournalEntryController.setEntryToEdit(null);
 
-            changeScene(e, "mainmenu.fxml");
+            control.changeScene(e, "mainmenu.fxml");
             break;
          default:
             System.out.printf("unknown event: %s\n", ((Control) e.getSource()).getId());
@@ -121,33 +124,40 @@ public class SearchController {
     * @param searchText         text to search for
     * @return ArrayList of JournalEntry objects
     */
-   private ArrayList<JournalEntry> search(LocalDateTime searchFromDateTime, LocalDateTime searchToDateTime,
+   private ArrayList<JournalEntry> search(LocalDate searchFromDate, LocalDate searchToDate,
          String searchText) {
       ArrayList<JournalEntry> entries = new ArrayList<JournalEntry>(); // Array to hold journal entries
+      ResultSet rs = null;
 
       dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
       titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
       resultsList.getItems().clear();
       try {
-         PreparedStatement pstmt = db.getConnection()
-               .prepareStatement(
-                     "SELECT id,title,content,date FROM entries WHERE date BETWEEN ? AND ? AND content LIKE ?");
-         pstmt.setLong(1, searchFromDateTime.toEpochSecond(ZoneOffset.UTC));
-         pstmt.setLong(2, searchToDateTime.toEpochSecond(ZoneOffset.UTC));
-         pstmt.setString(3, "%" + searchText + "%");
-         ResultSet rs = pstmt.executeQuery();
-
-         while (rs.next()) {
-            int id = rs.getInt("id");
-            // LocalDateTime date = LocalDateTime.ofEpochSecond(rs.getLong("date"), 0,
-            // ZoneOffset.UTC);
-            LocalDateTime date = LocalDateTime.ofEpochSecond(rs.getLong("date"), 0, ZoneOffset.UTC);
-            String title = rs.getString("title");
-            String content = rs.getString("content");
-            entries.add(new JournalEntry(id, date.toString(), title, content)); // Fill the array we will use for the
-                                                                                // table
-         }
-         pstmt.close();
+    	  if(searchFromDate != null && searchToDate != null) {
+    		  PreparedStatement pstmt = db.getConnection()
+                  .prepareStatement(
+                        "SELECT id,title,content,date FROM entries WHERE date BETWEEN ? AND ? AND content LIKE ? OR title LIKE ? ");
+    		  pstmt.setLong(1, searchFromDate.atStartOfDay().toEpochSecond(ZoneOffset.UTC));
+    		  pstmt.setLong(2, searchToDate.atTime(23, 59, 59).toEpochSecond(ZoneOffset.UTC));
+    		  pstmt.setString(3, "%" + searchText + "%");
+    		  pstmt.setString(4, "%" + searchText + "%");
+    		  rs = pstmt.executeQuery();
+    		  entries = searchHelper(rs);
+    		  pstmt.close();
+    	  }
+    	  else if (!searchText.isEmpty()){
+    		  PreparedStatement pstmt = db.getConnection()
+                      .prepareStatement(
+                            "SELECT id,title,content,date FROM entries WHERE content LIKE ? OR title LIKE ? ");
+        		  pstmt.setString(1, "%" + searchText + "%");
+        		  pstmt.setString(2, "%" + searchText + "%");
+        		  rs = pstmt.executeQuery();
+        		  entries = searchHelper(rs);
+        		  pstmt.close();
+    	  }
+    	  else {
+    		  System.out.println("Please enter a search criteria");
+    	  }
 
       } catch (SQLException sqle) {
          System.out.println("SQLException: " + sqle.getMessage());
@@ -156,22 +166,21 @@ public class SearchController {
       }
       return entries;
    }
-
-   /**
-    * Change the scene
-    * 
-    * @param e    Event where we can get the stage from
-    * @param fxml fxml file of new scene
-    */
-   private void changeScene(Event e, String fxml) {
-      try {
-         Parent root = FXMLLoader.load(getClass().getResource(fxml));
-         Scene scene = new Scene(root, 640, 480);
-
-         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-         stage.setScene(scene);
-      } catch (IOException ioe) {
-
-      }
+   
+   private ArrayList<JournalEntry> searchHelper(ResultSet rs) throws SQLException{
+	   
+	   ArrayList<JournalEntry> entries = new ArrayList<JournalEntry>(); // Array to hold journal entries
+	   
+       while (rs != null && rs.next()) {
+           int id = rs.getInt("id");
+           // LocalDateTime date = LocalDateTime.ofEpochSecond(rs.getLong("date"), 0,
+           // ZoneOffset.UTC);
+           LocalDateTime date = LocalDateTime.ofEpochSecond(rs.getLong("date"), 0, ZoneOffset.UTC);
+           String title = rs.getString("title");
+           String content = rs.getString("content");
+           entries.add(new JournalEntry(id, date.toString(), title, content)); // Fill the array we will use for the                                                                      // table
+       } 
+       
+       return entries; 
    }
 }

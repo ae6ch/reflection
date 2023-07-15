@@ -1,18 +1,12 @@
 package application;
 
-import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Control;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 /**
  * javafx controller for for resetpw.fxml
@@ -21,6 +15,7 @@ import javafx.stage.Stage;
  */
 public class ResetPasswordController {
    Database db;
+   
    @FXML
    TextField currentPasswordField;
    @FXML
@@ -31,6 +26,9 @@ public class ResetPasswordController {
    TextField securityQuestionField;
    @FXML
    TextField securityAnswerField;
+   
+	@FXML
+	private SceneController control = new SceneController();
 
    public ResetPasswordController() {
       System.out.println("ResetPasswordController constructor called");
@@ -49,7 +47,7 @@ public class ResetPasswordController {
             if (checkPasswordRules())
                storePassword();
 
-            changeScene(e, "login.fxml");
+            control.changeScene(e, "login.fxml");
             break;
          default:
             System.out.printf("unknown event: %s\n", ((Control) e.getSource()).getId());
@@ -114,24 +112,6 @@ public class ResetPasswordController {
          pstmt.close();
       } catch (SQLException sqle) {
          System.out.println("SQL Exception: " + sqle.getMessage());
-      }
-   }
-
-   /**
-    * Change the scene
-    * 
-    * @param e    Event where we can get the stage from
-    * @param fxml fxml file of new scene
-    */
-   private void changeScene(Event e, String fxml) {
-      try {
-         Parent root = FXMLLoader.load(getClass().getResource(fxml));
-         Scene scene = new Scene(root, 640, 480);
-
-         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-         stage.setScene(scene);
-      } catch (IOException ioe) {
-
       }
    }
 }

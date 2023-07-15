@@ -1,6 +1,5 @@
 package application;
 
-import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -15,14 +14,9 @@ import com.jfoenix.controls.JFXTimePicker;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Control;
 import javafx.scene.control.TextField;
 import javafx.scene.web.HTMLEditor;
-import javafx.stage.Stage;
 
 /**
  * javafx controller for for journalentry.fxml
@@ -30,6 +24,7 @@ import javafx.stage.Stage;
  * @author Steve Rubin
  */
 public class JournalEntryController {
+
    @FXML
    private TextField titleField;
    @FXML
@@ -38,6 +33,9 @@ public class JournalEntryController {
    private JFXDatePicker dateStamp;
    @FXML
    private JFXTimePicker timeStamp;
+   
+	@FXML
+	private SceneController control = new SceneController();
 
    Database db;
 
@@ -90,12 +88,12 @@ public class JournalEntryController {
          case "save":
             storeEntry();
             entryToEdit = null; // Clear entryToEdit
-            changeScene(e, "mainmenu.fxml");
+            control.changeScene(e, "mainmenu.fxml");
             break;
 
          case "cancel": // Change Password Button
             entryToEdit = null; // Clear entryToEdit
-            changeScene(e, "mainmenu.fxml");
+            control.changeScene(e, "mainmenu.fxml");
             break;
 
          default:
@@ -142,24 +140,6 @@ public class JournalEntryController {
 
       } catch (SQLException sqle) {
          System.out.println("SQLException: " + sqle.getMessage());
-      }
-   }
-
-   /**
-    * Change the scene
-    * 
-    * @param e    Event where we can get the stage from
-    * @param fxml fxml file of new scene
-    */
-   private void changeScene(Event e, String fxml) {
-      try {
-         Parent root = FXMLLoader.load(getClass().getResource(fxml));
-         Scene scene = new Scene(root, 640, 480);
-
-         Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-         stage.setScene(scene);
-      } catch (IOException ioe) {
-
       }
    }
 }

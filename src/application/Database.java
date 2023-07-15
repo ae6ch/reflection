@@ -43,7 +43,7 @@ public class Database {
          stmt.executeUpdate(sql);
          sql = "INSERT OR IGNORE INTO config (key, value) VALUES ('firstlaunch', '1');";
          stmt.executeUpdate(sql);
-         sql = "CREATE TABLE IF NOT EXISTS entries (id INTEGER PRIMARY KEY, title TEXT, content TEXT, date INTEGER);";
+         sql = "CREATE TABLE IF NOT EXISTS entries (id INTEGER PRIMARY KEY, title TEXT NULL, content TEXT NOT NULL, date INTEGER NOT NULL);";
          stmt.executeUpdate(sql);
 
          stmt.close();
