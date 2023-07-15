@@ -132,31 +132,29 @@ public class SearchController {
       dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
       titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
       resultsList.getItems().clear();
+      
       try {
-    	  if(searchFromDate != null && searchToDate != null) {
+    	  if(!searchText.isEmpty()) {
     		  PreparedStatement pstmt = db.getConnection()
                   .prepareStatement(
-                        "SELECT id,title,content,date FROM entries WHERE date BETWEEN ? AND ? AND content LIKE ? OR title LIKE ? ");
-    		  pstmt.setLong(1, searchFromDate.atStartOfDay().toEpochSecond(ZoneOffset.UTC));
-    		  pstmt.setLong(2, searchToDate.atTime(23, 59, 59).toEpochSecond(ZoneOffset.UTC));
+                        "SELECT id,title,content,date FROM entries WHERE date BETWEEN ? AND ? OR content LIKE ? OR title LIKE ? ");
+    		  
+    		  //check whether there is selected date range for the search
+    		  if (searchFromDate != null && searchToDate != null) {
+    			  pstmt.setLong(1, searchFromDate.atStartOfDay().toEpochSecond(ZoneOffset.UTC));
+    			  pstmt.setLong(2, searchToDate.atTime(23, 59, 59).toEpochSecond(ZoneOffset.UTC));
+    		  }
+    		  
+    		  //searches title and content for substring
     		  pstmt.setString(3, "%" + searchText + "%");
     		  pstmt.setString(4, "%" + searchText + "%");
     		  rs = pstmt.executeQuery();
     		  entries = searchHelper(rs);
     		  pstmt.close();
     	  }
-    	  else if (!searchText.isEmpty()){
-    		  PreparedStatement pstmt = db.getConnection()
-                      .prepareStatement(
-                            "SELECT id,title,content,date FROM entries WHERE content LIKE ? OR title LIKE ? ");
-        		  pstmt.setString(1, "%" + searchText + "%");
-        		  pstmt.setString(2, "%" + searchText + "%");
-        		  rs = pstmt.executeQuery();
-        		  entries = searchHelper(rs);
-        		  pstmt.close();
-    	  }
+
     	  else {
-    		  System.out.println("Please enter a search criteria");
+    		  System.out.println("Please enter a valid search parameter");
     	  }
 
       } catch (SQLException sqle) {
