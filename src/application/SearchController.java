@@ -128,7 +128,6 @@ public class SearchController {
     	  if(!searchText.isEmpty()) {
     		  rs = db.searchEntries(searchFromDate, searchToDate, searchText);
     		  entries = parseResultSet(rs);
-    		  System.out.println("search res");
     	  }
 
     	  else {

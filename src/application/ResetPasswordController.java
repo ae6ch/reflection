@@ -1,8 +1,5 @@
 package application;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Control;
@@ -66,10 +63,6 @@ public class ResetPasswordController {
          System.out.println("Passwords do not match");
          return false;
       }
-      if (newPasswordField.getText().length() < 8) {
-         System.out.println("Password must be at least 8 characters");
-         return false;
-      }
       if (securityQuestionField.getText().length() < 1) {
          System.out.println("Security question must be at least 1 character");
          return false;
@@ -90,28 +83,8 @@ public class ResetPasswordController {
  *
  */
    private void storePassword() {
-      try {
-         String sql = "INSERT INTO config (key,value) VALUES (?,?) on CONFLICT(key) DO UPDATE SET value=excluded.value";
-         PreparedStatement pstmt = db.getConnection().prepareStatement(sql);
-         pstmt.setString(1, "password");
-         pstmt.setString(2, newPasswordField.getText());
-         pstmt.executeUpdate();
+	   db.storepassword(newPasswordField.getText(), securityAnswerField.getText(),
+			   securityAnswerField.getText());
 
-         pstmt.setString(1, "securityquestion");
-         pstmt.setString(2, securityQuestionField.getText());
-         pstmt.executeUpdate();
-
-         pstmt.setString(1, "securityanswer");
-         pstmt.setString(2, securityAnswerField.getText());
-         pstmt.executeUpdate();
-
-         pstmt.setString(1, "firstlaunch");
-         pstmt.setString(2, "0");
-         pstmt.executeUpdate();
-
-         pstmt.close();
-      } catch (SQLException sqle) {
-         System.out.println("SQL Exception: " + sqle.getMessage());
-      }
    }
 }

@@ -57,6 +57,31 @@ public class Database {
       return c;
 
    }
+   void storepassword(String newPasswordField, String securityQuestionField, String securityAnswerField){
+	      try {
+	          String sql = "INSERT INTO config (key,value) VALUES (?,?) on CONFLICT(key) DO UPDATE SET value=excluded.value";
+	          PreparedStatement pstmt = db.prepareStatement(sql);
+	          pstmt.setString(1, "password");
+	          pstmt.setString(2, newPasswordField);
+	          pstmt.executeUpdate();
+
+	          pstmt.setString(1, "securityquestion");
+	          pstmt.setString(2, securityQuestionField);
+	          pstmt.executeUpdate();
+
+	          pstmt.setString(1, "securityanswer");
+	          pstmt.setString(2, securityAnswerField);
+	          pstmt.executeUpdate();
+
+	          pstmt.setString(1, "firstlaunch");
+	          pstmt.setString(2, "0");
+	          pstmt.executeUpdate();
+
+	          pstmt.close();
+	       } catch (SQLException sqle) {
+	          System.out.println("SQL Exception: " + sqle.getMessage());
+	       }
+   }
    void insertEntry(String title, String body, long timeInSeconds) {
 	   try {
 		   PreparedStatement pstmt = 
@@ -104,12 +129,16 @@ public class Database {
    	try {
    		PreparedStatement pstmt = 
    				db.prepareStatement(
-   						"SELECT id,title,content,date FROM entries WHERE date BETWEEN ? AND ? OR (content LIKE ? OR title LIKE ?) ");
+   						"SELECT id,title,content,date FROM entries WHERE date BETWEEN ? AND ? AND (content LIKE ? OR title LIKE ?)");
    		
    		//check whether there is selected date range for the search
    		if (searchFromDate != null && searchToDate != null) {
    			pstmt.setLong(1, searchFromDate.atStartOfDay().toEpochSecond(ZoneOffset.UTC));
    			pstmt.setLong(2, searchToDate.atTime(23, 59, 59).toEpochSecond(ZoneOffset.UTC));
+   		}
+   		else {
+   			pstmt.setLong(1, LocalDate.MIN.atStartOfDay().toEpochSecond(ZoneOffset.UTC));
+   			pstmt.setLong(2, LocalDate.MAX.atTime(23, 59, 59).toEpochSecond(ZoneOffset.UTC));
    		}
    		//searches title and content for substring
    		pstmt.setString(3, "%" + searchText + "%");
@@ -121,8 +150,6 @@ public class Database {
         System.out.println("SQLState: " + sqle.getSQLState());
         System.out.println("VendorError: " + sqle.getErrorCode());
      }
-   	
-   	System.out.println("im here");
    	return rs;
   }
 }
