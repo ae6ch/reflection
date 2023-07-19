@@ -13,8 +13,9 @@ import java.time.ZoneOffset;
  */
 public class Database {
 	
+	private static Connection dbConnection = null;
 	private static Database db = new Database();
-	private static Connection dbConnection;
+	
 
    private Database() {
 	   dbConnection = databaseOpen("reflection.db");
