@@ -41,7 +41,7 @@ public class JournalEntryController {
 
    public JournalEntryController() {
       System.out.println("JournalEntryController constructor called");
-      db = new Database();
+      db = Database.getDatabase();
 
    }
 

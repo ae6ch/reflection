@@ -1,10 +1,7 @@
 package application;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -16,7 +13,7 @@ import javafx.scene.control.TextField;
  */
 public class LoginController {
    Database db;
-   boolean firstlaunch = false;
+   boolean firstlaunch = true;
    
    @FXML
    TextField passwordField;
@@ -26,31 +23,32 @@ public class LoginController {
 
    public LoginController() {
       System.out.println("LoginController constructor called");
-      db = new Database();
+      db = Database.getDatabase();
 
       try {
-         Statement stmt = db.getConnection().createStatement();
-         String sql = "SELECT key,value FROM config";
-         ResultSet rs = stmt.executeQuery(sql);
+//         Statement stmt = db.getConnection().createStatement();
+         //String sql = "SELECT key,value FROM config";
+         ResultSet rs = db.selectSecurityQuestion();
+         System.out.println(rs);
 
          while (rs.next()) {
-            String key = rs.getString("key");
+           // String key = rs.getString("key");
             String value = rs.getString("value");
-            System.out.println("key = " + key);
+            //System.out.println("key = " + key);
             System.out.println("value = " + value);
-            if (key.equals("firstlaunch") && value.equals("1")) { // This firstlaunch thing is a bit hackish, sorry
-               System.out.println("firstlaunch = " + firstlaunch);
-               firstlaunch = true;
-            }
-            System.out.println("firstlaunch = " + firstlaunch);
+            firstlaunch = false;
+//            if (key.equals("firstlaunch") && value.equals("1")) { // This firstlaunch thing is a bit hackish, sorry
+//               System.out.println("firstlaunch = " + firstlaunch);
+//               firstlaunch = true;
+//            }
+//            System.out.println("firstlaunch = " + firstlaunch);
          }
-         stmt.close();
+//         stmt.close();
 
          if (firstlaunch) {
             System.out.println("First launch detected, please change your password");
          } else {
             System.out.println("Not our first time launching, please enter your password");
-
          }
       } catch (SQLException e) {
          System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -70,24 +68,24 @@ public class LoginController {
       // get the password from the database table config, key=password
       try {
 
-         PreparedStatement pstmt = db.getConnection()
-               .prepareStatement("SELECT value FROM config where key='password' and value = ?");
-         pstmt.setString(1, passwordField.getText());
+//         PreparedStatement pstmt = db.getConnection()
+//               .prepareStatement("SELECT value FROM config where key='password' and value = ?");
+//         pstmt.setString(1, passwordField.getText());
 
-         ResultSet rs = pstmt.executeQuery();
+         ResultSet rs = db.selectPassword();
 
-         if (rs.next()) {
+         if (rs.next() && (rs.getString("value")).equals(passwordField.getText())) {
             System.out.println("Password is correct");
             // see if firstlaunch is set to 1
             // if so changeScene to resetpw.fxml
             // else changeScene to mainmenu.fxml
             if (firstlaunch) {
                System.out.println("First launch detected, please change your password");
-               pstmt.close();
+//               pstmt.close();
                control.changeScene(e, "resetpw.fxml");
             } else {
                System.out.println("Not our first time launching, please enter your password");
-               pstmt.close();
+//               pstmt.close();
                control.changeScene(e, "mainmenu.fxml");
             }
          } else {

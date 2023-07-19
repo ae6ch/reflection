@@ -43,7 +43,7 @@ public class SearchController {
 
    public SearchController() {
       System.out.println("SearchController constructor called");
-      db = new Database();
+      db = Database.getDatabase();
    }
 
    public void initialize() {
@@ -118,7 +118,6 @@ public class SearchController {
    private ArrayList<JournalEntry> search(LocalDate searchFromDate, LocalDate searchToDate,
          String searchText) {
       ArrayList<JournalEntry> entries = new ArrayList<JournalEntry>(); // Array to hold journal entries
-      ResultSet rs = null;
 
       dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
       titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -126,7 +125,7 @@ public class SearchController {
       
       
     	  if(!searchText.isEmpty()) {
-    		  rs = db.searchEntries(searchFromDate, searchToDate, searchText);
+    		  ResultSet rs = db.searchEntries(searchFromDate, searchToDate, searchText);
     		  entries = parseResultSet(rs);
     	  }
 
@@ -142,7 +141,7 @@ public class SearchController {
 	   ArrayList<JournalEntry> entries = new ArrayList<JournalEntry>(); // Array to hold journal entries
 	   
 	   try {
-		   while (rs != null && rs.next()) {
+		   while (rs.next()) {
 			   int id = rs.getInt("id");
 			   // LocalDateTime date = LocalDateTime.ofEpochSecond(rs.getLong("date"), 0,
 			   // ZoneOffset.UTC);
