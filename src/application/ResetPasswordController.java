@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 /**
  * javafx controller for for resetpw.fxml
@@ -14,6 +15,7 @@ import javafx.scene.control.TextField;
 public class ResetPasswordController {
 
 	private dal sqlCommand;
+	private static boolean changepwd = true;
 
 	@FXML
 	private TextField currentPasswordField;
@@ -26,6 +28,10 @@ public class ResetPasswordController {
 	@FXML
 	private TextField securityAnswerField;
 	@FXML
+	private Text securityQuestionText;
+	@FXML
+	private Text securityAnswerText;
+	@FXML
 	private Label errorMessage;
 
 	@FXML
@@ -34,7 +40,17 @@ public class ResetPasswordController {
 	public ResetPasswordController() {
 		System.out.println("ResetPasswordController constructor called");
 		sqlCommand = new dal();
+	}
 
+	public void initialize() {
+		securityQuestionField.setVisible(changepwd);
+		securityAnswerField.setVisible(changepwd);
+		securityQuestionText.setVisible(changepwd);
+		securityAnswerText.setVisible(changepwd);
+	}
+	
+	public static void setChangepwd(boolean value) {
+		changepwd = value;
 	}
 
 	/**
@@ -48,6 +64,7 @@ public class ResetPasswordController {
 		case "changePasswordButton": // Change Password Button
 			if (checkPasswordRules()) {
 				storePassword();
+				changepwd = true;
 				control.changeScene(e, "login.fxml");
 			} else {
 				currentPasswordField.clear();
@@ -59,6 +76,7 @@ public class ResetPasswordController {
 			break;
 			
 		case "cancelButton": // Change Password Button
+			changepwd = true;
 			control.changeScene(e, "login.fxml");
 			break;
 			
@@ -80,12 +98,12 @@ public class ResetPasswordController {
 			errorMessage.setText("Passwords do not match");
 			return false;
 		}
-		if (securityQuestionField.getText().length() < 1) {
+		if (changepwd && securityQuestionField.getText().length() < 1) {
 			errorMessage.setText("");
 			errorMessage.setText("Security question must be at least 1 character");
 			return false;
 		}
-		if (securityAnswerField.getText().length() < 1) {
+		if (changepwd && securityAnswerField.getText().length() < 1) {
 			errorMessage.setText("");
 			errorMessage.setText("Security answer must be at least 1 character");
 			return false;

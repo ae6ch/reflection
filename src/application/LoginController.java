@@ -13,7 +13,7 @@ import javafx.scene.control.TextField;
 public class LoginController {
 
 	private dal sqlCommand;
-	private boolean firstlaunch = false;
+	private static boolean firstlaunch = false;
 
 	@FXML
 	private TextField passwordField;
@@ -61,6 +61,7 @@ public class LoginController {
 			// else changeScene to mainmenu.fxml
 			if (firstlaunch) {
 				System.out.println("First launch detected, please change your password");
+				firstlaunch = false;
 				control.changeScene(e, "resetpw.fxml");
 			} else {
 				System.out.println("Not our first time launching, please enter your password");

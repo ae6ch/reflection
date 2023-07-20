@@ -17,15 +17,17 @@ public class dal {
 			pstmt.setString(1, "password");
 			pstmt.setString(2, newPasswordField);
 			pstmt.executeUpdate();
+			
+			if (!securityQuestionField.isEmpty() && !securityAnswerField.isEmpty()) {
+				pstmt.setString(1, "securityquestion");
+				pstmt.setString(2, securityQuestionField);
+				pstmt.executeUpdate();
 
-			pstmt.setString(1, "securityquestion");
-			pstmt.setString(2, securityQuestionField);
-			pstmt.executeUpdate();
-
-			pstmt.setString(1, "securityanswer");
-			pstmt.setString(2, securityAnswerField);
-			pstmt.executeUpdate();
-
+				pstmt.setString(1, "securityanswer");
+				pstmt.setString(2, securityAnswerField);
+				pstmt.executeUpdate();
+			}
+			
 			pstmt.close();
 		} catch (SQLException sqle) {
 			System.out.println("SQL Exception: " + sqle.getMessage());

@@ -19,13 +19,13 @@
 				<Text layoutX="266.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reflection" textAlignment="CENTER" wrappingWidth="95.00000381469727" />
 				<Text layoutX="162.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Password" />
 				<Text layoutX="162.0" layoutY="241.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Password (again)" />
-				<Text layoutX="162.0" layoutY="278.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Security Question" />
+				<Text fx:id="securityQuestionText" layoutX="162.0" layoutY="278.0" visible ="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Security Question" />
 				<PasswordField fx:id="currentPasswordField" layoutX="293.0" layoutY="164.0" prefHeight="27.0" prefWidth="216.0" />
 				<PasswordField fx:id="newPasswordField" layoutX="293.0" layoutY="194.0" prefHeight="27.0" prefWidth="216.0" />
 				<PasswordField fx:id="confirmPasswordField" layoutX="293.0" layoutY="223.0" prefHeight="27.0" prefWidth="216.0" />
-				<Text layoutX="162.0" layoutY="317.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer" />
-				<PasswordField fx:id="securityAnswerField" layoutX="293.0" layoutY="299.0" prefHeight="27.0" prefWidth="216.0" />
-				<TextField fx:id="securityQuestionField" layoutX="293.0" layoutY="260.0" prefHeight="27.0" prefWidth="216.0" />
+				<Text fx:id="securityAnswerText" layoutX="162.0" layoutY="317.0" visible ="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer" />
+				<PasswordField fx:id="securityAnswerField" layoutX="293.0" layoutY="299.0" visible ="true" prefHeight="27.0" prefWidth="216.0" />
+				<TextField fx:id="securityQuestionField" layoutX="293.0" layoutY="260.0" visible ="true" prefHeight="27.0" prefWidth="216.0" />
 				<Button fx:id="cancelButton" layoutX="384.0" layoutY="403.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="27.0" prefWidth="125.0" text="Cancel" />
             <Label fx:id="errorMessage" alignment="CENTER" layoutX="39.0" layoutY="71.0" prefHeight="27.0" prefWidth="550.0" textAlignment="CENTER" textFill="#ff1616">
                <font>
