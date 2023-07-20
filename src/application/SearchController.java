@@ -70,12 +70,18 @@ public class SearchController {
 			
 		case "edit": // edit
 			System.out.println("edit");
-
+			
 			if (resultsList.getSelectionModel().getSelectedItem() != null) {
 				System.out.println("tableView selection: " + resultsList.getSelectionModel().getSelectedItem().getId());
 
 				JournalEntryController.setEntryToEdit(resultsList.getSelectionModel().getSelectedItem());
 				control.changeScene(e, "journalentry.fxml");
+			}  else if (resultsList.getItems().isEmpty()){
+				errorMessage.setText("");
+				errorMessage.setText("Please search for vaild entries prior to view/edit");
+			} else {
+				errorMessage.setText("");
+				errorMessage.setText("Please select an entry to view/edit");
 			}
 			break;
 			
@@ -87,7 +93,14 @@ public class SearchController {
 				sqlCommand.deleteEntry(resultsList.getSelectionModel().getSelectedItem().getId());
 
 				resultsList.getItems().remove(resultsList.getSelectionModel().getSelectedItem());
+			} else if (resultsList.getItems().isEmpty()){
+				errorMessage.setText("");
+				errorMessage.setText("Please search for vaild entries prior to delete");
+			} else {
+				errorMessage.setText("");
+				errorMessage.setText("Please select an entry to delete");
 			}
+
 			break;
 			
 		case "cancel": // cancel
