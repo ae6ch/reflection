@@ -1,9 +1,8 @@
 package application;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 /**
@@ -12,98 +11,80 @@ import javafx.scene.control.TextField;
  * @author Steve Rubin
  */
 public class LoginController {
-   Database db;
-   boolean firstlaunch = true;
-   
-   @FXML
-   TextField passwordField;
-   
+
+	private dal sqlCommand;
+	private boolean firstlaunch = false;
+
+	@FXML
+	private TextField passwordField;
+	@FXML
+	private Label errorMessage;
+
 	@FXML
 	private SceneController control = new SceneController();
 
-   public LoginController() {
-      System.out.println("LoginController constructor called");
-      db = Database.getDatabase();
+	public LoginController() {
+		System.out.println("LoginController constructor called");
+		sqlCommand = new dal();
 
-      try {
-//         Statement stmt = db.getConnection().createStatement();
-         //String sql = "SELECT key,value FROM config";
-         ResultSet rs = db.selectSecurityQuestion();
-         System.out.println(rs);
+		String question = sqlCommand.selectConfigValue("securityquestion");
 
-         while (rs.next()) {
-           // String key = rs.getString("key");
-            String value = rs.getString("value");
-            //System.out.println("key = " + key);
-            System.out.println("value = " + value);
-            firstlaunch = false;
-//            if (key.equals("firstlaunch") && value.equals("1")) { // This firstlaunch thing is a bit hackish, sorry
-//               System.out.println("firstlaunch = " + firstlaunch);
-//               firstlaunch = true;
-//            }
-//            System.out.println("firstlaunch = " + firstlaunch);
-         }
-//         stmt.close();
+		if (question == null) {
+			System.out.println("value = " + question);
+			firstlaunch = true;
+		}
 
-         if (firstlaunch) {
-            System.out.println("First launch detected, please change your password");
-         } else {
-            System.out.println("Not our first time launching, please enter your password");
-         }
-      } catch (SQLException e) {
-         System.err.println(e.getClass().getName() + ": " + e.getMessage());
-         System.exit(0);
-      }
+		if (firstlaunch) {
+			System.out.println("First launch detected, please change your password");
+		} else {
+			System.out.println("Not our first time launching, please enter your password");
+		}
 
-   }
+	}
 
-   /**
-    * Event handler for the Login button*
-    * 
-    * @param e event
-    */
+	/**
+	 * Event handler for the Login button*
+	 * 
+	 * @param e event
+	 */
 
-   public void loginButtonPressed(Event e) {
-      System.out.printf("Login button pressed, with Password of %s\n", passwordField.getText());
-      // get the password from the database table config, key=password
-      try {
+	public void loginButtonPressed(Event e) {
+		System.out.printf("Login button pressed, with Password of %s\n", passwordField.getText());
 
-//         PreparedStatement pstmt = db.getConnection()
-//               .prepareStatement("SELECT value FROM config where key='password' and value = ?");
-//         pstmt.setString(1, passwordField.getText());
+		String pwd = sqlCommand.selectConfigValue("password");
+		
+		if (passwordField.getText().equals(pwd)) {
+			System.out.println("Password is correct");
+			
+			// see if first launch is set to true
+			// if so changeScene to resetpw.fxml
+			// else changeScene to mainmenu.fxml
+			if (firstlaunch) {
+				System.out.println("First launch detected, please change your password");
+				control.changeScene(e, "resetpw.fxml");
+			} else {
+				System.out.println("Not our first time launching, please enter your password");
+				control.changeScene(e, "mainmenu.fxml");
+			}
+		} else {
+			errorMessage.setText("");
+			errorMessage.setText("Invaild password");
+		}
+	}
 
-         ResultSet rs = db.selectPassword();
-
-         if (rs.next() && (rs.getString("value")).equals(passwordField.getText())) {
-            System.out.println("Password is correct");
-            // see if firstlaunch is set to 1
-            // if so changeScene to resetpw.fxml
-            // else changeScene to mainmenu.fxml
-            if (firstlaunch) {
-               System.out.println("First launch detected, please change your password");
-//               pstmt.close();
-               control.changeScene(e, "resetpw.fxml");
-            } else {
-               System.out.println("Not our first time launching, please enter your password");
-//               pstmt.close();
-               control.changeScene(e, "mainmenu.fxml");
-            }
-         } else {
-            System.out.println("Password is incorrect");
-         }
-
-      } catch (SQLException sqle) {
-         System.err.println(sqle.getClass().getName() + ": " + sqle.getMessage());
-         System.exit(0);
-      }
-   }
-
-   /**
-    * Event handler for the Login button*
-    * 
-    * @param e event
-    */
-   public void resetButtonPressed(Event e) {
-      System.out.println("Reset button pressed");
-   }
+	/**
+	 * Event handler for the Login button*
+	 * 
+	 * @param e event
+	 */
+	public void resetButtonPressed(Event e) {
+		System.out.println("Reset button pressed");
+		
+		if (firstlaunch) {
+			errorMessage.setText("");
+			errorMessage.setText("Unable to Reset Password");
+		} else {
+			control.changeScene(e, "securityQuestionAnswer.fxml");
+		}
+	}
 }

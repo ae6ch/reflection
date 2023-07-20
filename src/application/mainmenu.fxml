@@ -5,16 +5,29 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MenuController">
-  <children>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-      <children>
-            <Button fx:id="search" layoutX="363.0" layoutY="119.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="27.0" prefWidth="178.0" text="Search" />
-            <Button fx:id="newJournalEntry" layoutX="142.0" layoutY="119.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="27.0" prefWidth="178.0" text="New Journal Entry" />
-            <Button fx:id="changePassword" layoutX="246.0" layoutY="222.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="27.0" prefWidth="178.0" text="Change Password" />
-            <Button fx:id="quit" layoutX="246.0" layoutY="275.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="27.0" prefWidth="178.0" text="Quit" />
-            <Text layoutX="308.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reflection" />
-      </children>
-    </AnchorPane>
-  </children>
+<VBox prefHeight="400.0" prefWidth="640.0"
+	xmlns="http://javafx.com/javafx/8.0.171"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="application.MenuController">
+	<children>
+		<AnchorPane maxHeight="-1.0" maxWidth="-1.0"
+			prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+			<children>
+				<Button fx:id="search" layoutX="363.0" layoutY="119.0"
+					mnemonicParsing="false" onAction="#buttonPressed" prefHeight="27.0"
+					prefWidth="178.0" text="Search" />
+				<Button fx:id="newJournalEntry" layoutX="142.0"
+					layoutY="119.0" mnemonicParsing="false" onAction="#buttonPressed"
+					prefHeight="27.0" prefWidth="178.0" text="New Journal Entry" />
+				<Button fx:id="changePassword" layoutX="246.0"
+					layoutY="222.0" mnemonicParsing="false" onAction="#buttonPressed"
+					prefHeight="27.0" prefWidth="178.0" text="Change Password" />
+				<Button fx:id="quit" layoutX="246.0" layoutY="275.0"
+					mnemonicParsing="false" onAction="#buttonPressed" prefHeight="27.0"
+					prefWidth="178.0" text="Quit" />
+				<Text layoutX="308.0" layoutY="38.0" strokeType="OUTSIDE"
+					strokeWidth="0.0" text="Reflection" />
+			</children>
+		</AnchorPane>
+	</children>
 </VBox>
