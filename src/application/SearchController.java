@@ -64,7 +64,9 @@ public class SearchController {
 		case "clear": // clear search parameters
 			textSearch.clear();
 			fromDate.getEditor().clear();
+			fromDate.setValue(null);
 			toDate.getEditor().clear();
+			toDate.setValue(null);
 			resultsList.getItems().clear();
 			break;
 			
@@ -131,14 +133,16 @@ public class SearchController {
 		dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
 		titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
 		resultsList.getItems().clear();
+		
+		System.out.println(searchFromDate);
 
-		if (!searchText.isEmpty()) {
+		if (!searchText.isEmpty() || (searchFromDate != null && searchToDate != null)) {
 			entries = sqlCommand.searchEntries(searchFromDate, searchToDate, searchText);
 		}
 
 		else {
 			errorMessage.setText("");
-			errorMessage.setText("Please enter a valid search parameter: must provide a substring");
+			errorMessage.setText("Please enter a valid search criteria");
 		}
 
 		return entries;

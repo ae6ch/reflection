@@ -83,7 +83,7 @@ public class LoginController {
 		
 		if (firstlaunch) {
 			errorMessage.setText("");
-			errorMessage.setText("Unable to Reset Password");
+			errorMessage.setText("First time launch, unable to Reset Password");
 		} else {
 			control.changeScene(e, "securityQuestionAnswer.fxml");
 		}

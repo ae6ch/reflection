@@ -20,15 +20,17 @@ public class ResetPasswordController {
 	@FXML
 	private TextField currentPasswordField;
 	@FXML
+	private Text currentPasswordText;
+	@FXML
 	private TextField newPasswordField;
 	@FXML
 	private TextField confirmPasswordField;
 	@FXML
 	private TextField securityQuestionField;
 	@FXML
-	private TextField securityAnswerField;
-	@FXML
 	private Text securityQuestionText;
+	@FXML
+	private TextField securityAnswerField;
 	@FXML
 	private Text securityAnswerText;
 	@FXML
@@ -43,6 +45,8 @@ public class ResetPasswordController {
 	}
 
 	public void initialize() {
+		currentPasswordField.setVisible(changepwd);
+		currentPasswordText.setVisible(changepwd);
 		securityQuestionField.setVisible(changepwd);
 		securityAnswerField.setVisible(changepwd);
 		securityQuestionText.setVisible(changepwd);
@@ -108,7 +112,7 @@ public class ResetPasswordController {
 			errorMessage.setText("Security answer must be at least 1 character");
 			return false;
 		}
-		if (!currentPasswordField.getText().equals(sqlCommand.selectConfigValue("password"))) {
+		if (changepwd && !currentPasswordField.getText().equals(sqlCommand.selectConfigValue("password"))) {
 			errorMessage.setText("");
 			errorMessage.setText("Invaild Password");
 			return false;
