@@ -1,15 +1,40 @@
 package application;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 
 public class dal {
-
+	
+	void createTables(Connection dbConnection) {
+		// config table is a key value store. It is used to store our settings (user
+		// password, etc). After creating the config table, add a entry called password
+		// with the value of "p", and another entry called "firstlaunch" with a value of
+		// 1.
+		// This will be used to check if the user has launched the program before.
+		try {
+			
+			Statement stmt = dbConnection.createStatement();
+			String sql = "CREATE TABLE IF NOT EXISTS config (key TEXT NOT NULL PRIMARY KEY, value TEXT NOT NULL);";
+			stmt.executeUpdate(sql);
+			sql = "INSERT OR IGNORE INTO config (key, value) VALUES ('password', 'p');";
+			stmt.executeUpdate(sql);
+			sql = "CREATE TABLE IF NOT EXISTS entries (id INTEGER NOT NULL PRIMARY KEY, title TEXT NULL, content TEXT NOT NULL, date INTEGER NOT NULL);";
+			stmt.executeUpdate(sql);
+			
+			stmt.close();
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.exit(0);
+		}
+	}
+	
 	void storepassword(String newPasswordField, String securityQuestionField, String securityAnswerField) {
 		try {
 			String sqlstmt = "INSERT INTO config (key,value) VALUES (?,?) on CONFLICT(key) DO UPDATE SET value=excluded.value";
