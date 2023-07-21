@@ -26,6 +26,11 @@ public class MenuController {
 			System.out.println("quit!");
 			System.exit(1);
 			
+		case "logout": // logout Button
+			System.out.println("quit!");
+			control.changeScene(e, "login.fxml");
+			break;
+			
 		case "search": // Search Button
 			System.out.println("search");
 			control.changeScene(e, "search.fxml");
