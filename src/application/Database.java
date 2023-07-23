@@ -7,7 +7,9 @@ import java.sql.*;
  * 
  */
 public class Database {
-
+	public static final String DB_FILE = "reflection.db";
+	public static final String DB_URL = "jdbc:sqlite:" + DB_FILE;
+	public static final String DRIVER_CLASS = "org.sqlite.JDBC";
 	private static Connection dbConnection = null;
 	private static Database db = new Database();
 
@@ -16,11 +18,12 @@ public class Database {
 	 * 
 	 */
 	private Database() {
-		dbConnection = databaseOpen("reflection.db");
+		dbConnection = databaseOpen(DB_FILE);
 	}
 
 	/**
 	 * return the database object in db
+	 * 
 	 * @return Database
 	 */
 	public static Database getDatabase() {
@@ -29,6 +32,7 @@ public class Database {
 
 	/**
 	 * Get the database connection
+	 * 
 	 * @return Connection
 	 */
 
@@ -47,16 +51,30 @@ public class Database {
 		SqlDal sqlCommand = new SqlDal();
 
 		try {
-			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:" + dbFile);
-		} catch (Exception e) {
-			//System.err.println(e.getClass().getName() + ": " + e.getMessage());
-			System.exit(0);
+			Class.forName(DRIVER_CLASS);
+			c = DriverManager.getConnection(DB_URL);
+		} catch (SQLException sqle) {
+			sqlException(sqle);
+		} catch (ClassNotFoundException cnfe) { // SQL driver not found
+			System.out.println(cnfe.getMessage());
 		}
-		//System.out.println("Opened database successfully");
+		// System.out.println("Opened database successfully");
 		sqlCommand.createTables(c);
 
 		return c;
 
+	}
+
+	/**
+	 * Handle SQL Exceptions in catch blocks
+	 * 
+	 * @param sqle SQLException
+	 */
+
+	public static void sqlException(SQLException sqle) {
+		System.out.println("SQLException: " + sqle.getMessage());
+		System.out.println("SQLState: " + sqle.getSQLState());
+		System.out.println("VendorError: " + sqle.getErrorCode());
+		System.exit(1);
 	}
 }

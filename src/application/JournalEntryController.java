@@ -90,7 +90,7 @@ public class JournalEntryController {
 	public void buttonPressed(Event e) {
 		switch (((Control) e.getSource()).getId()) {
 			case "save":
-				if (bodyField.getHtmlText().length() > 72) {
+				if (bodyField.getHtmlText().length() > 72) { // 72 is the length of the default html text
 					storeEntry();
 					entryToEdit = null; // Clear entryToEdit
 					control.changeScene(e, "mainmenu.fxml");

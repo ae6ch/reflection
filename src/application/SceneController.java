@@ -17,14 +17,23 @@ public class SceneController {
 	 * @param fxml fxml file of new scene
 	 */
 	void changeScene(Event e, String fxml) {
+		changeScene((Stage) ((Node) e.getSource()).getScene().getWindow(), fxml);
+	}
+	/**
+	 * Change the scene
+	 * 
+	 * @param s    Stage to change scene of
+	 * @param fxml fxml file of new scene
+	 */
+	void changeScene(Stage s, String fxml) {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource(fxml));
 			Scene scene = new Scene(root, 640, 480);
 
-			Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-			stage.setScene(scene);
-		} catch (IOException ioe) {
-			//TODO: handle exception
+			s.setScene(scene);
+		} catch (IOException ioe) { // if the fxml file isn't readable
+			ioe.printStackTrace();
 		}
 	}
+
 }

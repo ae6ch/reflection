@@ -40,7 +40,7 @@ public class SqlDal {
 
 			stmt.close();
 		} catch (SQLException sqle) {
-			sqlException(sqle);
+			Database.sqlException(sqle);
 
 		}
 	}
@@ -72,7 +72,7 @@ public class SqlDal {
 
 			pstmt.close();
 		} catch (SQLException sqle) {
-			sqlException(sqle);
+			Database.sqlException(sqle);
 		}
 	}
 
@@ -94,22 +94,10 @@ public class SqlDal {
 			value = selectConfigValueHelper(rs);
 
 		} catch (SQLException sqle) {
-			sqlException(sqle);
+			Database.sqlException(sqle);
 		}
 
 		return value;
-	}
-
-	/**
-	 * Handle SQL Exceptions in catch blocks
-	 * 
-	 * @param sqle
-	 */
-	private void sqlException(SQLException sqle) {
-		System.out.println("SQLException: " + sqle.getMessage());
-		System.out.println("SQLState: " + sqle.getSQLState());
-		System.out.println("VendorError: " + sqle.getErrorCode());
-		System.exit(1);
 	}
 
 	private String selectConfigValueHelper(ResultSet rs) throws SQLException {
@@ -141,7 +129,7 @@ public class SqlDal {
 			pstmt.executeUpdate();
 
 		} catch (SQLException sqle) {
-			sqlException(sqle);
+			Database.sqlException(sqle);
 		}
 	}
 
@@ -168,7 +156,7 @@ public class SqlDal {
 			pstmt.executeUpdate();
 
 		} catch (SQLException sqle) {
-			sqlException(sqle);
+			Database.sqlException(sqle);
 		}
 	}
 
@@ -186,7 +174,7 @@ public class SqlDal {
 			pstmt.setInt(1, id);
 			pstmt.executeUpdate();
 		} catch (SQLException sqle) {
-			sqlException(sqle);
+			Database.sqlException(sqle);
 
 		}
 	}
@@ -223,7 +211,7 @@ public class SqlDal {
 			parseResultSet(rs, entries);
 
 		} catch (SQLException sqle) {
-			sqlException(sqle);
+			Database.sqlException(sqle);
 		}
 		return entries;
 	}
@@ -249,7 +237,7 @@ public class SqlDal {
 				// the // table
 			}
 		} catch (SQLException sqle) {
-			sqlException(sqle);
+			Database.sqlException(sqle);
 		}
 
 		return entries;
