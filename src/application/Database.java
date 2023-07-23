@@ -18,7 +18,7 @@ public class Database {
 	 * 
 	 */
 	private Database() {
-		dbConnection = databaseOpen(DB_FILE);
+		dbConnection = databaseOpen();
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class Database {
 	 * @param dbFile database file for sqlite
 	 * @return Connection
 	 */
-	private Connection databaseOpen(String dbFile) {
+	private Connection databaseOpen() {
 		Connection c = null;
 		SqlDal sqlCommand = new SqlDal();
 
@@ -58,7 +58,6 @@ public class Database {
 		} catch (ClassNotFoundException cnfe) { // SQL driver not found
 			System.out.println(cnfe.getMessage());
 		}
-		// System.out.println("Opened database successfully");
 		sqlCommand.createTables(c);
 
 		return c;

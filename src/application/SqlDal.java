@@ -28,9 +28,8 @@ public class SqlDal {
 		// with the value of "p", and another entry called "firstlaunch" with a value of
 		// 1.
 		// This will be used to check if the user has launched the program before.
-		try {
+		try (Statement stmt = dbConnection.createStatement()) {
 
-			Statement stmt = dbConnection.createStatement();
 			String sql = "CREATE TABLE IF NOT EXISTS config (key TEXT NOT NULL PRIMARY KEY, value TEXT NOT NULL);";
 			stmt.executeUpdate(sql);
 			sql = "INSERT OR IGNORE INTO config (key, value) VALUES ('password', 'p');";
@@ -38,7 +37,6 @@ public class SqlDal {
 			sql = "CREATE TABLE IF NOT EXISTS entries (id INTEGER NOT NULL PRIMARY KEY, title TEXT NULL, content TEXT NOT NULL, date INTEGER NOT NULL);";
 			stmt.executeUpdate(sql);
 
-			stmt.close();
 		} catch (SQLException sqle) {
 			Database.sqlException(sqle);
 
@@ -53,9 +51,8 @@ public class SqlDal {
 	 * @param securityAnswerField   Security answer
 	 */
 	void storePassword(String newPasswordField, String securityQuestionField, String securityAnswerField) {
-		try {
-			String sqlstmt = "INSERT INTO config (key,value) VALUES (?,?) on CONFLICT(key) DO UPDATE SET value=excluded.value";
-			PreparedStatement pstmt = Database.getConnection().prepareStatement(sqlstmt);
+		String sqlstmt = "INSERT INTO config (key,value) VALUES (?,?) on CONFLICT(key) DO UPDATE SET value=excluded.value";
+		try (PreparedStatement pstmt = Database.getConnection().prepareStatement(sqlstmt);) {
 			pstmt.setString(1, "password");
 			pstmt.setString(2, newPasswordField);
 			pstmt.executeUpdate();
@@ -70,7 +67,6 @@ public class SqlDal {
 				pstmt.executeUpdate();
 			}
 
-			pstmt.close();
 		} catch (SQLException sqle) {
 			Database.sqlException(sqle);
 		}
@@ -87,8 +83,7 @@ public class SqlDal {
 		String value = null;
 		String sqlstmt = "SELECT value FROM config WHERE key == ?";
 
-		try {
-			PreparedStatement pstmt = Database.getConnection().prepareStatement(sqlstmt);
+		try (PreparedStatement pstmt = Database.getConnection().prepareStatement(sqlstmt)) {
 			pstmt.setString(1, key);
 			ResultSet rs = pstmt.executeQuery();
 			value = selectConfigValueHelper(rs);
@@ -121,8 +116,8 @@ public class SqlDal {
 
 		String sqlstmt = "INSERT INTO entries (title, content, date) VALUES (?, ?, ?)";
 
-		try {
-			PreparedStatement pstmt = Database.getConnection().prepareStatement(sqlstmt);
+		try (PreparedStatement pstmt = Database.getConnection().prepareStatement(sqlstmt)) {
+
 			pstmt.setString(1, title);
 			pstmt.setString(2, body);
 			pstmt.setLong(3, timeInSeconds);
@@ -147,8 +142,7 @@ public class SqlDal {
 
 		String sqlstmt = "UPDATE entries SET title = ?, content = ?, date = ? WHERE id = ?";
 
-		try {
-			PreparedStatement pstmt = Database.getConnection().prepareStatement(sqlstmt);
+		try (PreparedStatement pstmt = Database.getConnection().prepareStatement(sqlstmt)) {
 			pstmt.setString(1, title);
 			pstmt.setString(2, body);
 			pstmt.setLong(3, timeInSeconds);
@@ -169,8 +163,7 @@ public class SqlDal {
 
 		String sqlstmt = "DELETE from entries where id = ?";
 
-		try {
-			PreparedStatement pstmt = Database.getConnection().prepareStatement(sqlstmt);
+		try (PreparedStatement pstmt = Database.getConnection().prepareStatement(sqlstmt)) {
 			pstmt.setInt(1, id);
 			pstmt.executeUpdate();
 		} catch (SQLException sqle) {
@@ -193,8 +186,7 @@ public class SqlDal {
 		ArrayList<JournalEntry> entries = new ArrayList<>(); // Array to hold journal entries
 		String sqlstmt = "SELECT id,title,content,date FROM entries WHERE date BETWEEN ? AND ? AND (content LIKE ? OR title LIKE ?)";
 
-		try {
-			PreparedStatement pstmt = Database.getConnection().prepareStatement(sqlstmt);
+		try (PreparedStatement pstmt = Database.getConnection().prepareStatement(sqlstmt)) {
 
 			// check whether there is selected date range for the search
 			if (searchFromDate != null && searchToDate != null) {
@@ -228,8 +220,6 @@ public class SqlDal {
 		try {
 			while (rs.next()) {
 				int id = rs.getInt("id");
-				// LocalDateTime date = LocalDateTime.ofEpochSecond(rs.getLong("date"), 0,
-				// ZoneOffset.UTC);
 				LocalDateTime date = LocalDateTime.ofEpochSecond(rs.getLong("date"), 0, ZoneOffset.UTC);
 				String title = rs.getString("title");
 				String content = rs.getString("content");

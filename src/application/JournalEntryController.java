@@ -42,7 +42,6 @@ public class JournalEntryController {
 	 * Constructor
 	 */
 	public JournalEntryController() {
-		// System.out.println("JournalEntryController constructor called");
 		sqlCommand = new SqlDal();
 
 	}
@@ -52,12 +51,9 @@ public class JournalEntryController {
 	 * 
 	 */
 	public void initialize() {
-		// System.out.println("JournalEntryController initialize called");
 		if (entryToEdit != null) { // we are in edit mode
-			// System.out.println("entryToEdit is not null is " + entryToEdit.getId());
 			titleField.setText(entryToEdit.getTitle());
 			bodyField.setHtmlText(entryToEdit.getContent());
-			// System.out.printf(entryToEdit.getDate());
 			try {
 				dateStamp.setValue(LocalDate.parse(entryToEdit.getDate(), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
 				timeStamp.setValue(LocalTime.parse(entryToEdit.getDate(), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
@@ -94,8 +90,7 @@ public class JournalEntryController {
 					storeEntry();
 					entryToEdit = null; // Clear entryToEdit
 					control.changeScene(e, "mainmenu.fxml");
-				} else {
-					// System.out.println("Please enter journal content");
+					//TODO: add error message if body is empty
 				}
 				break;
 
@@ -121,11 +116,9 @@ public class JournalEntryController {
 		LocalDate date = dateStamp.getValue();
 		LocalTime time = timeStamp.getValue();
 		LocalDateTime localDateTime = LocalDateTime.of(date, time);
-		// System.out.println("Title: " + title);
-		// System.out.println("Body: " + body);
+
 		long timeInSeconds = localDateTime.toEpochSecond(ZoneOffset.UTC);
 
-		// System.out.println("DateTime: " + timeInSeconds);
 
 		// Save the values to the database
 		if (entryToEdit != null) // Update existing entry - Should be an upsert for this entire block

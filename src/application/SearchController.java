@@ -37,19 +37,14 @@ public class SearchController {
 	@FXML
 	private SceneController control = new SceneController();
 
-	private SqlDal sqlCommand; // TODO: all the database stuff should be in the database class?
+	private SqlDal sqlCommand;
 
 	/**
 	 * 
 	 */
 	public SearchController() {
-		// System.out.println("SearchController constructor called");
 		sqlCommand = new SqlDal();
 	}
-
-	// public void initialize() {
-	// System.out.println("SearchController initialize called");
-	// }
 
 	/**
 	 * Event handler for any buttons
@@ -73,11 +68,8 @@ public class SearchController {
 				break;
 
 			case "edit": // edit
-				// System.out.println("edit");
 
 				if (resultsList.getSelectionModel().getSelectedItem() != null) {
-					// System.out.println("tableView selection: " +
-					// resultsList.getSelectionModel().getSelectedItem().getId());
 
 					JournalEntryController.setEntryToEdit(resultsList.getSelectionModel().getSelectedItem());
 					control.changeScene(e, "journalentry.fxml");
@@ -91,11 +83,9 @@ public class SearchController {
 				break;
 
 			case "delete": // delete
-				// System.out.println("delete");
 
 				if (resultsList.getSelectionModel().getSelectedItem() != null) {
-					// System.out.println("tableView selection: " +
-					// resultsList.getSelectionModel().getSelectedItem().getId());
+
 					sqlCommand.deleteEntry(resultsList.getSelectionModel().getSelectedItem().getId());
 
 					resultsList.getItems().remove(resultsList.getSelectionModel().getSelectedItem());
@@ -110,21 +100,20 @@ public class SearchController {
 				break;
 
 			case "cancel": // cancel
-				// System.out.println("cancel");
 				JournalEntryController.setEntryToEdit(null);
 				control.changeScene(e, "mainmenu.fxml");
 				break;
 
 			default:
-				// System.out.printf("unknown event: %s\n", ((Control) e.getSource()).getId());
 				break;
 
 		}
 	}
 
 	/**
-	 * Search the database for entries matching the search criteria TODO: move this
-	 * to a Journal class?
+	 * Search the database for entries matching the search criteria
+	 * 
+	 * TODO: move this to Journal class?
 	 * 
 	 * @param searchFromDateTime start date/time of search
 	 * @param searchToDateTime   end date/time of search
@@ -132,13 +121,11 @@ public class SearchController {
 	 * @return ArrayList of JournalEntry objects
 	 */
 	private ArrayList<JournalEntry> search(LocalDate searchFromDate, LocalDate searchToDate, String searchText) {
-		ArrayList<JournalEntry> entries = new ArrayList<JournalEntry>(); // Array to hold journal entries
+		ArrayList<JournalEntry> entries = new ArrayList<>(); // Array to hold journal entries
 
 		dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
 		titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
 		resultsList.getItems().clear();
-
-		// System.out.println(searchFromDate);
 
 		if (!searchText.isEmpty() || (searchFromDate != null && searchToDate != null)) {
 			entries = sqlCommand.searchEntries(searchFromDate, searchToDate, searchText);

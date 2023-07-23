@@ -22,26 +22,22 @@ public class MenuController {
 		switch (((Control) e.getSource()).getId()) {
 
 			case "quit": // Quit Button
-				// System.out.println("quit!");
 				System.exit(1);
+				break; // not reached, but linter complains
 
 			case "logout": // logout Button
-				// System.out.println("logout");
 				control.changeScene(e, "login.fxml");
 				break;
 
 			case "search": // Search Button
-				// System.out.println("search");
 				control.changeScene(e, "search.fxml");
 				break;
 
 			case "newJournalEntry": // New Journal Entry Button
-				// System.out.println("newjournalentry");
 				control.changeScene(e, "journalentry.fxml");
 				break;
 
 			case "changePassword": // Change Password Button
-				// System.out.println("changepw");
 				control.changeScene(e, "resetpw.fxml");
 				break;
 

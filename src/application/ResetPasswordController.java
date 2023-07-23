@@ -42,7 +42,6 @@ public class ResetPasswordController {
 	 * Constructor
 	 */
 	public ResetPasswordController() {
-		// System.out.println("ResetPasswordController constructor called");
 		sqlCommand = new SqlDal();
 	}
 
@@ -63,7 +62,7 @@ public class ResetPasswordController {
 	 * 
 	 * @param value true if we are changing the password, false otherwise
 	 */
-	public static void setChangepwd(boolean value) {
+	public static void setChangepwd(boolean value) { // TODO: where is this called?
 		changepwd = value;
 	}
 

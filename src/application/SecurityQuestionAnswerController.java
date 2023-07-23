@@ -27,7 +27,6 @@ public class SecurityQuestionAnswerController {
 	 * constructor
 	 */
 	public SecurityQuestionAnswerController() {
-		//System.out.println("SecurityQuestionAnswerController constructor called");
 		sqlCommand = new SqlDal();
 	}
 	
@@ -35,7 +34,6 @@ public class SecurityQuestionAnswerController {
 	 * Initialize the scene
 	 */
 	public void initialize() {
-		//System.out.println("SecurityQuestionAnswerController initialize called");
 		securityQuestionField.setText(sqlCommand.selectConfigValue("securityquestion"));
 	}
 	
