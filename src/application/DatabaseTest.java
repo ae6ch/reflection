@@ -10,7 +10,12 @@ import org.junit.jupiter.api.Test;
 
 public class DatabaseTest {
 	@Test
-	void testGetConnection() {
+	void testGetDatabase() {
 		assert (Database.getDatabase() != null);
 	}
+	@Test
+	void testGetConnection() {
+		assert (Database.getConnection() != null);
+	}
+	
 }
