@@ -35,23 +35,30 @@ public class JournalEntryController {
 	@FXML
 	private SceneController control = new SceneController();
 
-	private dal sqlCommand;
+	private SqlDal sqlCommand;
 
 	static JournalEntry entryToEdit = null;
 
+	/**
+	 * Constructor
+	 */
 	public JournalEntryController() {
-		System.out.println("JournalEntryController constructor called");
-		sqlCommand = new dal();
+		// System.out.println("JournalEntryController constructor called");
+		sqlCommand = new SqlDal();
 
 	}
 
+	/**
+	 * Initialize the controller
+	 * 
+	 */
 	public void initialize() {
-		System.out.println("JournalEntryController initialize called");
+		// System.out.println("JournalEntryController initialize called");
 		if (entryToEdit != null) { // we are in edit mode
-			System.out.println("entryToEdit is not null is " + entryToEdit.getId());
+			// System.out.println("entryToEdit is not null is " + entryToEdit.getId());
 			titleField.setText(entryToEdit.getTitle());
 			bodyField.setHtmlText(entryToEdit.getContent());
-			System.out.printf(entryToEdit.getDate());
+			// System.out.printf(entryToEdit.getDate());
 			try {
 				dateStamp.setValue(LocalDate.parse(entryToEdit.getDate(), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
 				timeStamp.setValue(LocalTime.parse(entryToEdit.getDate(), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
@@ -83,39 +90,43 @@ public class JournalEntryController {
 	 */
 	public void buttonPressed(Event e) {
 		switch (((Control) e.getSource()).getId()) {
-		case "save":
-			if (bodyField.getHtmlText().length() > 72) {
-				storeEntry();
+			case "save":
+				if (bodyField.getHtmlText().length() > 72) {
+					storeEntry();
+					entryToEdit = null; // Clear entryToEdit
+					control.changeScene(e, "mainmenu.fxml");
+				} else {
+					// System.out.println("Please enter journal content");
+				}
+				break;
+
+			case "cancel": // Change Password Button
 				entryToEdit = null; // Clear entryToEdit
 				control.changeScene(e, "mainmenu.fxml");
-			} else {
-				System.out.println("Please enter journal content");
-			}
-			break;
+				break;
 
-		case "cancel": // Change Password Button
-			entryToEdit = null; // Clear entryToEdit
-			control.changeScene(e, "mainmenu.fxml");
-			break;
-
-		default:
-			System.out.printf("unknown event: %s\n", ((Control) e.getSource()).getId());
-			break;
+			default:
+				System.out.printf("unknown event: %s\n", ((Control) e.getSource()).getId());
+				break;
 
 		}
 	}
 
+	/**
+	 * Store the entry in the database
+	 * TODO: Move globals to parameters
+	 */
 	private void storeEntry() {
 		String title = titleField.getText();
 		String body = bodyField.getHtmlText();
 		LocalDate date = dateStamp.getValue();
 		LocalTime time = timeStamp.getValue();
 		LocalDateTime localDateTime = LocalDateTime.of(date, time);
-		System.out.println("Title: " + title);
-		System.out.println("Body: " + body);
+		// System.out.println("Title: " + title);
+		// System.out.println("Body: " + body);
 		long timeInSeconds = localDateTime.toEpochSecond(ZoneOffset.UTC);
 
-		System.out.println("DateTime: " + timeInSeconds);
+		// System.out.println("DateTime: " + timeInSeconds);
 
 		// Save the values to the database
 		if (entryToEdit != null) // Update existing entry - Should be an upsert for this entire block

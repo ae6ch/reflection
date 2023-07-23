@@ -10,11 +10,10 @@ import javafx.scene.text.Text;
 /**
  * javafx controller for for resetpw.fxml
  * 
- * @author Steve Rubin
  */
 public class ResetPasswordController {
 
-	private dal sqlCommand;
+	private SqlDal sqlCommand;
 	private static boolean changepwd = true;
 
 	@FXML
@@ -39,11 +38,17 @@ public class ResetPasswordController {
 	@FXML
 	private SceneController control = new SceneController();
 
+	/**
+	 * Constructor
+	 */
 	public ResetPasswordController() {
-		System.out.println("ResetPasswordController constructor called");
-		sqlCommand = new dal();
+		// System.out.println("ResetPasswordController constructor called");
+		sqlCommand = new SqlDal();
 	}
 
+	/**
+	 * Initialize the scene
+	 */
 	public void initialize() {
 		currentPasswordField.setVisible(changepwd);
 		currentPasswordText.setVisible(changepwd);
@@ -52,7 +57,12 @@ public class ResetPasswordController {
 		securityQuestionText.setVisible(changepwd);
 		securityAnswerText.setVisible(changepwd);
 	}
-	
+
+	/**
+	 * Set the changepwd flag
+	 * 
+	 * @param value true if we are changing the password, false otherwise
+	 */
 	public static void setChangepwd(boolean value) {
 		changepwd = value;
 	}
@@ -64,29 +74,29 @@ public class ResetPasswordController {
 	 */
 	public void buttonPressed(Event e) {
 		switch (((Control) e.getSource()).getId()) {
-		
-		case "changePasswordButton": // Change Password Button
-			if (checkPasswordRules()) {
-				storePassword();
+
+			case "changePasswordButton": // Change Password Button
+				if (checkPasswordRules()) {
+					storePassword();
+					changepwd = true;
+					control.changeScene(e, "login.fxml");
+				} else {
+					currentPasswordField.clear();
+					newPasswordField.clear();
+					confirmPasswordField.clear();
+					securityQuestionField.clear();
+					securityAnswerField.clear();
+				}
+				break;
+
+			case "cancelButton": // Change Password Button
 				changepwd = true;
 				control.changeScene(e, "login.fxml");
-			} else {
-				currentPasswordField.clear();
-				newPasswordField.clear();
-				confirmPasswordField.clear();
-				securityQuestionField.clear();
-				securityAnswerField.clear();
-			}
-			break;
-			
-		case "cancelButton": // Change Password Button
-			changepwd = true;
-			control.changeScene(e, "login.fxml");
-			break;
-			
-		default:
-			System.out.printf("unknown event: %s\n", ((Control) e.getSource()).getId());
-			break;
+				break;
+
+			default:
+				System.out.printf("unknown event: %s\n", ((Control) e.getSource()).getId());
+				break;
 
 		}
 	}
@@ -121,11 +131,12 @@ public class ResetPasswordController {
 	}
 
 	/**
-	 * Store the new password in the database TODO: move somewhere else?
+	 * Store the new password in the database
 	 *
+	 * TODO: move globals to parameters
 	 */
 	private void storePassword() {
-		sqlCommand.storepassword(newPasswordField.getText(), securityAnswerField.getText(),
+		sqlCommand.storePassword(newPasswordField.getText(), securityQuestionField.getText(),
 				securityAnswerField.getText());
 
 	}

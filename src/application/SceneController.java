@@ -24,7 +24,7 @@ public class SceneController {
 			Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 			stage.setScene(scene);
 		} catch (IOException ioe) {
-
+			//TODO: handle exception
 		}
 	}
 }

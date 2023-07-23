@@ -8,11 +8,10 @@ import javafx.scene.control.TextField;
 /**
  * javafx controller for for login.fxml
  * 
- * @author Steve Rubin
  */
 public class LoginController {
 
-	private dal sqlCommand;
+	private SqlDal sqlCommand;
 	private static boolean firstlaunch = false;
 
 	@FXML
@@ -23,21 +22,25 @@ public class LoginController {
 	@FXML
 	private SceneController control = new SceneController();
 
+	/**
+	 * Constructor
+	 */
 	public LoginController() {
-		System.out.println("LoginController constructor called");
-		sqlCommand = new dal();
+		// System.out.println("LoginController constructor called");
+		sqlCommand = new SqlDal();
 
 		String question = sqlCommand.selectConfigValue("securityquestion");
 
 		if (question == null) {
-			System.out.println("value = " + question);
+			// System.out.println("value = " + question);
 			firstlaunch = true;
 		}
 
 		if (firstlaunch) {
-			System.out.println("First launch detected, please change your password");
+			// System.out.println("First launch detected, please change your password");
 		} else {
-			System.out.println("Not our first time launching, please enter your password");
+			// System.out.println("Not our first time launching, please enter your
+			// password");
 		}
 
 	}
@@ -49,22 +52,24 @@ public class LoginController {
 	 */
 
 	public void loginButtonPressed(Event e) {
-		System.out.printf("Login button pressed, with Password of %s\n", passwordField.getText());
+		// System.out.printf("Login button pressed, with Password of %s\n",
+		// passwordField.getText());
 
 		String pwd = sqlCommand.selectConfigValue("password");
-		
+
 		if (passwordField.getText().equals(pwd)) {
-			System.out.println("Password is correct");
-			
+			// System.out.println("Password is correct");
+
 			// see if first launch is set to true
 			// if so changeScene to resetpw.fxml
 			// else changeScene to mainmenu.fxml
 			if (firstlaunch) {
-				System.out.println("First launch detected, please change your password");
+				// System.out.println("First launch detected, please change your password");
 				firstlaunch = false;
 				control.changeScene(e, "resetpw.fxml");
 			} else {
-				System.out.println("Not our first time launching, please enter your password");
+				// System.out.println("Not our first time launching, please enter your
+				// password");
 				control.changeScene(e, "mainmenu.fxml");
 			}
 		} else {
@@ -79,11 +84,11 @@ public class LoginController {
 	 * @param e event
 	 */
 	public void resetButtonPressed(Event e) {
-		System.out.println("Reset button pressed");
-		
+		// System.out.println("Reset button pressed");
+
 		if (firstlaunch) {
 			errorMessage.setText("");
-			errorMessage.setText("First time launch, unable to Reset Password");
+			// errorMessage.setText("First time launch, unable to Reset Password");
 		} else {
 			control.changeScene(e, "securityQuestionAnswer.fxml");
 		}

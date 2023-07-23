@@ -31,34 +31,74 @@ public class JournalEntry {
 		this.content = content;
 	}
 
+	/**
+	 * Get the id of the entry
+	 * 
+	 * @return int id of entry
+	 */
 	public int getId() {
 		return id;
 	}
 
+	/**
+	 * Get the date of the entry
+	 * 
+	 * @return String date of entry
+	 */
 	public String getDate() {
 		return date;
 	}
 
+	/**
+	 * Set the date of the entry
+	 * 
+	 * @param date String date of entry
+	 */
 	public void setDate(String date) {
 		this.date = date;
 	}
 
+	/**
+	 * Get the title of the entry
+	 * 
+	 * @return String title of entry
+	 */
 	public String getTitle() {
 		return title;
 	}
 
+	/**
+	 * Set the title of the entry
+	 * 
+	 * @param title String title of entry
+	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
+	/**
+	 * Set the content of the entry
+	 * 
+	 * @param content String content of entry
+	 */
 	public void setContent(String content) {
 		this.content = content;
 	}
 
+	/**
+	 * Get the content of the entry
+	 * 
+	 * @return String content of entry
+	 */
 	public String getContent() {
 		return content;
 	}
 
+	/**
+	 * Get the time in seconds of the entry
+	 * 
+	 * @return long time in seconds of entry (epoch time)
+	 */
 	public long getTimeInSeconds() {
 		return LocalDateTime.parse(date).toEpochSecond(ZoneOffset.UTC);
 	}

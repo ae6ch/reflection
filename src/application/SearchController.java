@@ -16,7 +16,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 /**
  * javafx controller for for search.fxml
  * 
- * @author Steve Rubin
  */
 public class SearchController {
 
@@ -38,16 +37,19 @@ public class SearchController {
 	@FXML
 	private SceneController control = new SceneController();
 
-	private dal sqlCommand; // TODO: all the database stuff should be in the database class?
+	private SqlDal sqlCommand; // TODO: all the database stuff should be in the database class?
 
+	/**
+	 * 
+	 */
 	public SearchController() {
-		System.out.println("SearchController constructor called");
-		sqlCommand = new dal();
+		// System.out.println("SearchController constructor called");
+		sqlCommand = new SqlDal();
 	}
 
-//	public void initialize() {
-//		System.out.println("SearchController initialize called");
-//	}
+	// public void initialize() {
+	// System.out.println("SearchController initialize called");
+	// }
 
 	/**
 	 * Event handler for any buttons
@@ -56,64 +58,66 @@ public class SearchController {
 	 */
 	public void buttonPressed(Event e) {
 		switch (((Control) e.getSource()).getId()) {
-		
-		case "search": // search
-			resultsList.getItems().setAll(search(fromDate.getValue(), toDate.getValue(), textSearch.getText()));
-			break;
-			
-		case "clear": // clear search parameters
-			textSearch.clear();
-			fromDate.getEditor().clear();
-			fromDate.setValue(null);
-			toDate.getEditor().clear();
-			toDate.setValue(null);
-			resultsList.getItems().clear();
-			break;
-			
-		case "edit": // edit
-			System.out.println("edit");
-			
-			if (resultsList.getSelectionModel().getSelectedItem() != null) {
-				System.out.println("tableView selection: " + resultsList.getSelectionModel().getSelectedItem().getId());
 
-				JournalEntryController.setEntryToEdit(resultsList.getSelectionModel().getSelectedItem());
-				control.changeScene(e, "journalentry.fxml");
-			}  else if (resultsList.getItems().isEmpty()){
-				errorMessage.setText("");
-				errorMessage.setText("Please search for vaild entries prior to view/edit");
-			} else {
-				errorMessage.setText("");
-				errorMessage.setText("Please select an entry to view/edit");
-			}
-			break;
-			
-		case "delete": // delete
-			System.out.println("delete");
+			case "search": // search
+				resultsList.getItems().setAll(search(fromDate.getValue(), toDate.getValue(), textSearch.getText()));
+				break;
 
-			if (resultsList.getSelectionModel().getSelectedItem() != null) {
-				System.out.println("tableView selection: " + resultsList.getSelectionModel().getSelectedItem().getId());
-				sqlCommand.deleteEntry(resultsList.getSelectionModel().getSelectedItem().getId());
+			case "clear": // clear search parameters
+				textSearch.clear();
+				fromDate.getEditor().clear();
+				fromDate.setValue(null);
+				toDate.getEditor().clear();
+				toDate.setValue(null);
+				resultsList.getItems().clear();
+				break;
 
-				resultsList.getItems().remove(resultsList.getSelectionModel().getSelectedItem());
-			} else if (resultsList.getItems().isEmpty()){
-				errorMessage.setText("");
-				errorMessage.setText("Please search for vaild entries prior to delete");
-			} else {
-				errorMessage.setText("");
-				errorMessage.setText("Please select an entry to delete");
-			}
+			case "edit": // edit
+				// System.out.println("edit");
 
-			break;
-			
-		case "cancel": // cancel
-			System.out.println("cancel");
-			JournalEntryController.setEntryToEdit(null);
-			control.changeScene(e, "mainmenu.fxml");
-			break;
-			
-		default:
-			System.out.printf("unknown event: %s\n", ((Control) e.getSource()).getId());
-			break;
+				if (resultsList.getSelectionModel().getSelectedItem() != null) {
+					// System.out.println("tableView selection: " +
+					// resultsList.getSelectionModel().getSelectedItem().getId());
+
+					JournalEntryController.setEntryToEdit(resultsList.getSelectionModel().getSelectedItem());
+					control.changeScene(e, "journalentry.fxml");
+				} else if (resultsList.getItems().isEmpty()) {
+					errorMessage.setText("");
+					errorMessage.setText("Please search for vaild entries prior to view/edit");
+				} else {
+					errorMessage.setText("");
+					errorMessage.setText("Please select an entry to view/edit");
+				}
+				break;
+
+			case "delete": // delete
+				// System.out.println("delete");
+
+				if (resultsList.getSelectionModel().getSelectedItem() != null) {
+					// System.out.println("tableView selection: " +
+					// resultsList.getSelectionModel().getSelectedItem().getId());
+					sqlCommand.deleteEntry(resultsList.getSelectionModel().getSelectedItem().getId());
+
+					resultsList.getItems().remove(resultsList.getSelectionModel().getSelectedItem());
+				} else if (resultsList.getItems().isEmpty()) {
+					errorMessage.setText("");
+					errorMessage.setText("Please search for vaild entries prior to delete");
+				} else {
+					errorMessage.setText("");
+					errorMessage.setText("Please select an entry to delete");
+				}
+
+				break;
+
+			case "cancel": // cancel
+				// System.out.println("cancel");
+				JournalEntryController.setEntryToEdit(null);
+				control.changeScene(e, "mainmenu.fxml");
+				break;
+
+			default:
+				// System.out.printf("unknown event: %s\n", ((Control) e.getSource()).getId());
+				break;
 
 		}
 	}
@@ -133,8 +137,8 @@ public class SearchController {
 		dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
 		titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
 		resultsList.getItems().clear();
-		
-		System.out.println(searchFromDate);
+
+		// System.out.println(searchFromDate);
 
 		if (!searchText.isEmpty() || (searchFromDate != null && searchToDate != null)) {
 			entries = sqlCommand.searchEntries(searchFromDate, searchToDate, searchText);

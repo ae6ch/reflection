@@ -7,10 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * Most of this code needs to be moved to a Reflection class and shouldn't be
- * here
- * 
- * @author Steve Rubin
+ * Main class
  */
 public class Main extends Application {
 
