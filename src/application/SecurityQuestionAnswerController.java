@@ -73,14 +73,8 @@ public class SecurityQuestionAnswerController {
 	 * Check if the answer is correct
 	 * @return true if the answer is correct, false otherwise
 	 */
-	public boolean checkAnswer() {
-		
-		String Answer = sqlCommand.selectConfigValue("securityanswer");
-		
-		if(securityAnswerField.getText().equals(Answer))
-			return true;
-		
-		return false;
+	public boolean checkAnswer() {		
+		return securityAnswerField.getText().equals(sqlCommand.selectConfigValue("securityanswer"));
 	}
 
 }
