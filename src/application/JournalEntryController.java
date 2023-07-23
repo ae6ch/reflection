@@ -19,7 +19,6 @@ import javafx.scene.web.HTMLEditor;
 /**
  * javafx controller for for journalentry.fxml
  * 
- * @author Steve Rubin
  */
 public class JournalEntryController {
 

@@ -8,7 +8,6 @@ import java.time.ZoneOffset;
  * 
  * Contains a single journal entry (stored in the enries table)
  * 
- * @author Steve Rubin
  */
 public class JournalEntry {
 	private int id;

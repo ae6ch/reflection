@@ -49,7 +49,7 @@ public class SecurityQuestionAnswerController {
 		
 		case "nextButton": // go to resetpw scene
 			if (checkAnswer()) {
-				ResetPasswordController.setChangepwd(false);;
+				ResetPasswordController.setChangepwd(false);
 				control.changeScene(e, "resetpw.fxml");
 			} else {
 				errorMessage.setText("");

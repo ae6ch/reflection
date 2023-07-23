@@ -202,7 +202,7 @@ public class SqlDal {
 	 */
 	ArrayList<JournalEntry> searchEntries(LocalDate searchFromDate, LocalDate searchToDate, String searchText) {
 
-		ArrayList<JournalEntry> entries = new ArrayList<JournalEntry>(); // Array to hold journal entries
+		ArrayList<JournalEntry> entries = new ArrayList<>(); // Array to hold journal entries
 		String sqlstmt = "SELECT id,title,content,date FROM entries WHERE date BETWEEN ? AND ? AND (content LIKE ? OR title LIKE ?)";
 
 		try {
