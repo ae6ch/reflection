@@ -46,6 +46,11 @@ public class SearchController {
 		sqlCommand = new SqlDal();
 	}
 
+	public void initialize() {
+		fromDate.setValue(LocalDate.parse("2023-01-01"));
+		toDate.setValue(LocalDate.now());
+	}
+
 	/**
 	 * Event handler for any buttons
 	 * 
@@ -113,7 +118,6 @@ public class SearchController {
 	/**
 	 * Search the database for entries matching the search criteria
 	 * 
-	 * TODO: move this to Journal class?
 	 * 
 	 * @param searchFromDateTime start date/time of search
 	 * @param searchToDateTime   end date/time of search
