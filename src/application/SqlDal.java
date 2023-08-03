@@ -47,12 +47,12 @@ public class SqlDal {
 	 * UPSERT the password and security question/answer into the config table.
 	 * 
 	 * @param newPasswordField      new password
-	 * @param securityQuestionField Secuturity question
+	 * @param securityQuestionField Security question
 	 * @param securityAnswerField   Security answer
 	 */
 	void storePassword(String newPasswordField, String securityQuestionField, String securityAnswerField) {
 		String sqlstmt = "INSERT INTO config (key,value) VALUES (?,?) on CONFLICT(key) DO UPDATE SET value=excluded.value";
-		try (PreparedStatement pstmt = Database.getConnection().prepareStatement(sqlstmt);) {
+		try (PreparedStatement pstmt = Database.getConnection().prepareStatement(sqlstmt)) {
 			pstmt.setString(1, ConfigKey.PASSWORD.toString());
 			pstmt.setString(2, newPasswordField);
 			pstmt.executeUpdate();
