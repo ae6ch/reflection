@@ -34,7 +34,7 @@ public class SecurityQuestionAnswerController {
 	 * Initialize the scene
 	 */
 	public void initialize() {
-		securityQuestionField.setText(sqlCommand.selectConfigValue("securityquestion"));
+		securityQuestionField.setText(sqlCommand.selectConfigValue(ConfigKey.SECURITYQUESTION));
 	}
 	
 	/**
@@ -72,7 +72,7 @@ public class SecurityQuestionAnswerController {
 	 * @return true if the answer is correct, false otherwise
 	 */
 	public boolean checkAnswer() {		
-		return securityAnswerField.getText().equals(sqlCommand.selectConfigValue("securityanswer"));
+		return securityAnswerField.getText().equals(sqlCommand.selectConfigValue(ConfigKey.SECURITYANSWER));
 	}
 
 }

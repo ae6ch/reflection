@@ -65,10 +65,8 @@ public class SearchController {
 
 			case "clear": // clear search parameters
 				textSearch.clear();
-				fromDate.getEditor().clear();
-				fromDate.setValue(null);
-				toDate.getEditor().clear();
-				toDate.setValue(null);
+				fromDate.setValue(LocalDate.parse("2023-01-01"));
+				toDate.setValue(LocalDate.now());
 				resultsList.getItems().clear();
 				break;
 

@@ -28,7 +28,7 @@ public class LoginController {
 	public LoginController() {
 		sqlCommand = new SqlDal();
 
-		String question = sqlCommand.selectConfigValue("securityquestion");
+		String question = sqlCommand.selectConfigValue(ConfigKey.SECURITYQUESTION);
 
 		if (question == null) {
 			firstlaunch = true;
@@ -44,7 +44,7 @@ public class LoginController {
 
 	public void loginButtonPressed(Event e) {
 
-		String pwd = sqlCommand.selectConfigValue("password");
+		String pwd = sqlCommand.selectConfigValue(ConfigKey.PASSWORD);
 
 		if (passwordField.getText().equals(pwd)) {
 

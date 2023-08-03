@@ -121,7 +121,7 @@ public class ResetPasswordController {
 			errorMessage.setText("Security answer must be at least 1 character");
 			return false;
 		}
-		if (changepwd && !currentPasswordField.getText().equals(sqlCommand.selectConfigValue("password"))) {
+		if (changepwd && !currentPasswordField.getText().equals(sqlCommand.selectConfigValue(ConfigKey.PASSWORD))) {
 			errorMessage.setText("");
 			errorMessage.setText("Invaild Password");
 			return false;

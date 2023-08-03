@@ -25,14 +25,14 @@ public class SqlDal {
 	void createTables(Connection dbConnection) {
 		// config table is a key value store. It is used to store our settings (user
 		// password, etc). After creating the config table, add a entry called password
-		// with the value of "p", and another entry called "firstlaunch" with a value of
+		// with the value of "p", and another entry called "first launch" with a value of
 		// 1.
 		// This will be used to check if the user has launched the program before.
 		try (Statement stmt = dbConnection.createStatement()) {
 
 			String sql = "CREATE TABLE IF NOT EXISTS config (key TEXT NOT NULL PRIMARY KEY, value TEXT NOT NULL);";
 			stmt.executeUpdate(sql);
-			sql = "INSERT OR IGNORE INTO config (key, value) VALUES ('password', 'p');";
+			sql = "INSERT OR IGNORE INTO config (key, value) VALUES ('PASSWORD' , 'p');";
 			stmt.executeUpdate(sql);
 			sql = "CREATE TABLE IF NOT EXISTS entries (id INTEGER NOT NULL PRIMARY KEY, title TEXT NULL, content TEXT NOT NULL, date INTEGER NOT NULL);";
 			stmt.executeUpdate(sql);
@@ -53,16 +53,16 @@ public class SqlDal {
 	void storePassword(String newPasswordField, String securityQuestionField, String securityAnswerField) {
 		String sqlstmt = "INSERT INTO config (key,value) VALUES (?,?) on CONFLICT(key) DO UPDATE SET value=excluded.value";
 		try (PreparedStatement pstmt = Database.getConnection().prepareStatement(sqlstmt);) {
-			pstmt.setString(1, "password");
+			pstmt.setString(1, ConfigKey.PASSWORD.toString());
 			pstmt.setString(2, newPasswordField);
 			pstmt.executeUpdate();
 
 			if (!securityQuestionField.isEmpty() && !securityAnswerField.isEmpty()) {
-				pstmt.setString(1, "securityquestion");
+				pstmt.setString(1, ConfigKey.SECURITYQUESTION.toString());
 				pstmt.setString(2, securityQuestionField);
 				pstmt.executeUpdate();
 
-				pstmt.setString(1, "securityanswer");
+				pstmt.setString(1, ConfigKey.SECURITYANSWER.toString());
 				pstmt.setString(2, securityAnswerField);
 				pstmt.executeUpdate();
 			}
@@ -78,13 +78,13 @@ public class SqlDal {
 	 * @param key key to search for
 	 * @return value from the key/value store
 	 */
-	String selectConfigValue(String key) {
+	String selectConfigValue(ConfigKey key) {
 
 		String value = null;
 		String sqlstmt = "SELECT value FROM config WHERE key == ?";
 
 		try (PreparedStatement pstmt = Database.getConnection().prepareStatement(sqlstmt)) {
-			pstmt.setString(1, key);
+			pstmt.setString(1, key.toString());
 			ResultSet rs = pstmt.executeQuery();
 			value = selectConfigValueHelper(rs);
 
