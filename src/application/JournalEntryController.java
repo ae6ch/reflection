@@ -13,6 +13,7 @@ import com.jfoenix.controls.JFXTimePicker;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Control;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.web.HTMLEditor;
 
@@ -30,6 +31,8 @@ public class JournalEntryController {
 	private JFXDatePicker dateStamp;
 	@FXML
 	private JFXTimePicker timeStamp;
+	@FXML
+	private Label errorMessage;
 
 	@FXML
 	private SceneController control = new SceneController();
@@ -90,7 +93,10 @@ public class JournalEntryController {
 					storeEntry();
 					entryToEdit = null; // Clear entryToEdit
 					control.changeScene(e, "mainmenu.fxml");
-					//TODO: add error message if body is empty
+				}
+				else {
+					errorMessage.setText("");
+					errorMessage.setText("Please enter journal entry content");
 				}
 				break;
 

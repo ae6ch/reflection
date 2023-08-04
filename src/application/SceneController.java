@@ -28,7 +28,7 @@ public class SceneController {
 	void changeScene(Stage s, String fxml) {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource(fxml));
-			Scene scene = new Scene(root, 640, 480);
+			Scene scene = new Scene(root, 650, 480);
 
 			s.setScene(scene);
 		} catch (IOException ioe) { // if the fxml file isn't readable

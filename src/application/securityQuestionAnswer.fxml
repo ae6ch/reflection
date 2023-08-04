@@ -3,32 +3,61 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SecurityQuestionAnswerController">
-	<children>
+<StackPane prefHeight="480.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SecurityQuestionAnswerController">
+   <children>
+      <ImageView fitHeight="480.0" fitWidth="650.0" opacity="0.35">
+         <image>
+            <Image url="@journalImage.png" />
+         </image>
+      </ImageView>
 
-		<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+      		<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
 			<children>
-				<Button fx:id="nextButton" layoutX="211.0" layoutY="289.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="27.0" prefWidth="125.0" text="Next" />
-				<Text layoutX="266.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reflection" textAlignment="CENTER" wrappingWidth="95.00000381469727" />
-				<Text layoutX="130.0" layoutY="166.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Security Question" />
-				<Text layoutX="136.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer" />
+				<Button fx:id="nextButton" layoutX="138.0" layoutY="307.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="150.0" text="Next" textFill="#5f1378">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+				<Text fill="#5f1378" layoutX="252.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reflection" textAlignment="CENTER" wrappingWidth="164.00000381469727">
+               <font>
+                  <Font name="System Bold" size="35.0" />
+               </font>
+            </Text>
+				<Text fill="#5f1378" layoutX="110.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Security Question">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+				<Text fill="#5f1378" layoutX="110.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Text>
 				<PasswordField fx:id="securityAnswerField" layoutX="268.0" layoutY="197.0" prefHeight="27.0" prefWidth="216.0" />
-				<Button fx:id="cancelButton" layoutX="359.0" layoutY="289.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="27.0" prefWidth="125.0" text="Cancel" />
-            <Label fx:id="securityQuestionField" layoutX="268.0" layoutY="148.0" prefHeight="27.0" prefWidth="325.0">
+				<Button fx:id="cancelButton" layoutX="334.0" layoutY="307.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="150.0" text="Cancel" textFill="#5f1378">
                <font>
                   <Font name="System Bold" size="15.0" />
-               </font></Label>
-            <Label fx:id="errorMessage" alignment="CENTER" layoutX="39.0" layoutY="74.0" prefHeight="27.0" prefWidth="550.0" textAlignment="CENTER" textFill="#ff1616">
+               </font>
+            </Button>
+            <Label fx:id="securityQuestionField" layoutX="268.0" layoutY="148.0" prefHeight="27.0" prefWidth="325.0">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="errorMessage" alignment="CENTER" layoutX="59.0" layoutY="93.0" prefHeight="27.0" prefWidth="550.0" textAlignment="CENTER" textFill="#ff1616">
                <font>
                   <Font name="System Bold" size="13.0" />
-               </font></Label>
+               </font>
+            </Label>
 
-			</children>
+      			</children>
 		</AnchorPane>
-	</children>
-</VBox>
+   </children>
+</StackPane>

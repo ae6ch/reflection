@@ -214,22 +214,19 @@ public class SqlDal {
 	 * @param rs      JDBC ResultSet
 	 * @param entries ArrayList of JournalEntry
 	 * @return ArrayList of JournalEntry
+	 * @throws SQLException 
 	 */
-	private ArrayList<JournalEntry> parseResultSet(ResultSet rs, ArrayList<JournalEntry> entries) {
+	private ArrayList<JournalEntry> parseResultSet(ResultSet rs, ArrayList<JournalEntry> entries) throws SQLException {
 
-		try {
-			while (rs.next()) {
-				int id = rs.getInt("id");
-				LocalDateTime date = LocalDateTime.ofEpochSecond(rs.getLong("date"), 0, ZoneOffset.UTC);
-				String title = rs.getString("title");
-				String content = rs.getString("content");
-				entries.add(new JournalEntry(id, date.toString(), title, content)); // Fill the array we will use for
-				// the // table
-			}
-		} catch (SQLException sqle) {
-			Database.sqlException(sqle);
+		while (rs.next()) {
+			int id = rs.getInt("id");
+			LocalDateTime date = LocalDateTime.ofEpochSecond(rs.getLong("date"), 0, ZoneOffset.UTC);
+			String title = rs.getString("title");
+			String content = rs.getString("content");
+			entries.add(new JournalEntry(id, date.toString(), title, content)); // Fill the array we will use for
+			// the // table
 		}
-
+		
 		return entries;
 	}
 

@@ -3,39 +3,51 @@
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTimePicker?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.web.HTMLEditor?>
 
-<VBox prefHeight="400.0" prefWidth="640.0"
-	xmlns="http://javafx.com/javafx/8.0.171"
-	xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="application.JournalEntryController">
-	<children>
+<StackPane prefHeight="480.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.JournalEntryController">
+   <children>
+      <ImageView fitHeight="480.0" fitWidth="650.0" opacity="0.35">
+         <image>
+            <Image url="@journalImage2.png" />
+         </image>
+      </ImageView>
 
-		<AnchorPane maxHeight="-1.0" maxWidth="-1.0"
-			prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+      		<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
 			<children>
-				<Text layoutX="272.0" layoutY="19.0" strokeType="OUTSIDE"
-					strokeWidth="0.0" text=" Reflection" textAlignment="CENTER"
-					wrappingWidth="95.00000381469727" />
-				<HTMLEditor fx:id="bodyField"
-					htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;"
-					layoutX="8.0" layoutY="63.0" prefHeight="267.0" prefWidth="625.0" />
-				<Button fx:id="save" layoutX="579.0" layoutY="330.0"
-					mnemonicParsing="false" onAction="#buttonPressed" text="Save" />
-				<Button fx:id="cancel" layoutX="517.0" layoutY="330.0"
-					mnemonicParsing="false" onAction="#buttonPressed" text="Cancel" />
-				<TextField fx:id="titleField" layoutX="27.0"
-					layoutY="29.0" prefHeight="27.0" prefWidth="594.0"
-					promptText="title" />
-				<JFXDatePicker fx:id="dateStamp" layoutX="14.0"
-					layoutY="344.0" />
-				<JFXTimePicker fx:id="timeStamp" layoutX="210.0"
-					layoutY="341.0" />
+				<Text fill="#5f1378" layoutX="238.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Reflection" textAlignment="CENTER" wrappingWidth="173.00000381469727">
+               <font>
+                  <Font size="35.0" />
+               </font>
+            </Text>
+				<HTMLEditor fx:id="bodyField" htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;" layoutX="12.0" layoutY="136.0" opacity="0.8" prefHeight="267.0" prefWidth="625.0" />
+				<Button fx:id="save" alignment="CENTER" contentDisplay="CENTER" layoutX="557.0" layoutY="413.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="80.0" text="Save" textAlignment="CENTER" textFill="#5f1378">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+				<Button fx:id="cancel" alignment="CENTER" contentDisplay="CENTER" layoutX="469.0" layoutY="413.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="80.0" text="Cancel" textFill="#5f1378">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+				<TextField fx:id="titleField" layoutX="31.0" layoutY="102.0" opacity="0.8" prefHeight="27.0" prefWidth="594.0" promptText="title" />
+				<JFXDatePicker fx:id="dateStamp" layoutX="18.0" layoutY="417.0" />
+				<JFXTimePicker fx:id="timeStamp" layoutX="214.0" layoutY="414.0" />
+            <Label fx:id="errorMessage" alignment="CENTER" contentDisplay="CENTER" layoutX="50.0" layoutY="62.0" prefHeight="25.0" prefWidth="550.0" textAlignment="CENTER" textFill="#ff1616">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
 			</children>
 		</AnchorPane>
-	</children>
-</VBox>
+   </children>
+</StackPane>

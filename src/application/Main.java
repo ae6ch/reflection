@@ -16,7 +16,7 @@ public class Main extends Application {
 		try {
 			Parent loginFxml = FXMLLoader.load(getClass().getResource("login.fxml"));
 
-			Scene loginScene = new Scene(loginFxml, 640, 480);
+			Scene loginScene = new Scene(loginFxml, 650, 480);
 
 			stage.setTitle("Reflection");
 			stage.setScene(loginScene);

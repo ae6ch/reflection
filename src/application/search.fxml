@@ -6,38 +6,78 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SearchController">
-	<children>
+<StackPane prefHeight="480.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SearchController">
+   <children>
+      <ImageView fitHeight="480.0" fitWidth="650.0" opacity="0.35">
+         <image>
+            <Image url="@journalImage2.png" />
+         </image>
+      </ImageView>
 
-		<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+      		<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
 			<children>
-				<DatePicker fx:id="fromDate" layoutX="29.0" layoutY="44.0" />
-				<DatePicker fx:id="toDate" layoutX="249.0" layoutY="44.0" />
-				<Text layoutX="222.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-to-" />
-				<TextField fx:id="textSearch" layoutX="29.0" layoutY="85.0" prefHeight="27.0" prefWidth="571.0" promptText="Free Form Text Search" />
-				<Text layoutX="29.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Results" textAlignment="CENTER" wrappingWidth="571.0000038146973" />
-				<Button fx:id="search" layoutX="529.0" layoutY="44.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="27.0" prefWidth="70.0" text="Search" />
-				<Button fx:id="cancel" layoutX="536.0" layoutY="359.0" mnemonicParsing="false" onAction="#buttonPressed" text="Cancel" />
-				<TableView fx:id="resultsList" layoutX="28.0" layoutY="142.0" prefHeight="200.0" prefWidth="571.0">
+				<DatePicker fx:id="fromDate" layoutX="37.0" layoutY="86.0" opacity="0.8" prefHeight="25.0" prefWidth="170.0" />
+				<DatePicker fx:id="toDate" layoutX="249.0" layoutY="86.0" opacity="0.8" prefHeight="25.0" prefWidth="170.0" />
+				<Text fill="#5f1378" layoutX="215.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-to-">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Text>
+				<TextField fx:id="textSearch" layoutX="40.0" layoutY="124.0" opacity="0.8" prefHeight="27.0" prefWidth="571.0" promptText="Free Form Text Search" />
+				<Text fill="#5f1378" layoutX="37.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Results" textAlignment="CENTER" wrappingWidth="571.0000038146973">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+				<Button fx:id="search" alignment="CENTER" contentDisplay="CENTER" layoutX="534.0" layoutY="82.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="80.0" text="Search" textAlignment="CENTER" textFill="#5f1378">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+				<Button fx:id="cancel" alignment="CENTER" contentDisplay="CENTER" layoutX="483.0" layoutY="431.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="125.0" text="Cancel" textAlignment="CENTER" textFill="#5f1378">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+				<TableView fx:id="resultsList" layoutX="38.0" layoutY="180.0" opacity="0.8" prefHeight="240.0" prefWidth="570.0">
 					<columns>
 						<TableColumn fx:id="dateCol" prefWidth="211.0" text="Date/Time" />
 						<TableColumn fx:id="titleCol" prefWidth="359.0" text="Title" />
 					</columns>
 				</TableView>
-				<Button fx:id="edit" layoutX="176.0" layoutY="359.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="27.0" prefWidth="100.0" text="View/Edit" />
-				<Button fx:id="delete" layoutX="320.0" layoutY="359.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="27.0" prefWidth="100.0" text="Delete" />
-            <Button fx:id="clear" layoutX="452.0" layoutY="44.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="20.0" prefWidth="70.0" text="Clear" />
-            <Label fx:id="errorMessage" alignment="CENTER" layoutX="45.0" layoutY="14.0" prefHeight="25.0" prefWidth="550.0" textAlignment="CENTER" textFill="#ff1616">
+				<Button fx:id="edit" alignment="CENTER" contentDisplay="CENTER" layoutX="131.0" layoutY="431.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="125.0" text="View/Edit" textAlignment="CENTER" textFill="#5f1378">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+				<Button fx:id="delete" alignment="CENTER" contentDisplay="CENTER" layoutX="271.0" layoutY="431.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="125.0" text="Delete" textAlignment="CENTER" textFill="#5f1378">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="clear" alignment="CENTER" contentDisplay="CENTER" layoutX="443.0" layoutY="82.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="80.0" text="Clear" textAlignment="CENTER" textFill="#5f1378">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+            <Label fx:id="errorMessage" alignment="CENTER" contentDisplay="CENTER" layoutX="48.0" layoutY="57.0" prefHeight="25.0" prefWidth="550.0" textAlignment="CENTER" textFill="#ff1616">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="260.0" layoutY="14.0" text="Reflection" textAlignment="CENTER" textFill="#5f1378">
+               <font>
+                  <Font size="35.0" />
+               </font>
+            </Label>
 			</children>
 		</AnchorPane>
-	</children>
-</VBox>
+   </children>
+</StackPane>

@@ -18,6 +18,7 @@ public class LoginController {
 	private TextField passwordField;
 	@FXML
 	private Label errorMessage;
+	
 
 	@FXML
 	private SceneController control = new SceneController();
