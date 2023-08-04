@@ -36,12 +36,12 @@
                   <Font size="18.0" />
                </font>
             </Text>
-				<Button fx:id="search" alignment="CENTER" contentDisplay="CENTER" layoutX="534.0" layoutY="82.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="80.0" text="Search" textAlignment="CENTER" textFill="#5f1378">
+				<Button fx:id="search" alignment="CENTER" contentDisplay="CENTER" layoutX="534.0" layoutY="82.0" mnemonicParsing="false" onAction="#buttonPressed" opacity="0.8" prefHeight="35.0" prefWidth="80.0" text="Search" textAlignment="CENTER" textFill="#5f1378">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-				<Button fx:id="cancel" alignment="CENTER" contentDisplay="CENTER" layoutX="483.0" layoutY="431.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="125.0" text="Cancel" textAlignment="CENTER" textFill="#5f1378">
+				<Button fx:id="cancel" alignment="CENTER" contentDisplay="CENTER" layoutX="483.0" layoutY="431.0" mnemonicParsing="false" onAction="#buttonPressed" opacity="0.8" prefHeight="35.0" prefWidth="125.0" text="Cancel" textAlignment="CENTER" textFill="#5f1378">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -52,17 +52,17 @@
 						<TableColumn fx:id="titleCol" prefWidth="359.0" text="Title" />
 					</columns>
 				</TableView>
-				<Button fx:id="edit" alignment="CENTER" contentDisplay="CENTER" layoutX="131.0" layoutY="431.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="125.0" text="View/Edit" textAlignment="CENTER" textFill="#5f1378">
+				<Button fx:id="edit" alignment="CENTER" contentDisplay="CENTER" layoutX="131.0" layoutY="431.0" mnemonicParsing="false" onAction="#buttonPressed" opacity="0.8" prefHeight="35.0" prefWidth="125.0" text="View/Edit" textAlignment="CENTER" textFill="#5f1378">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-				<Button fx:id="delete" alignment="CENTER" contentDisplay="CENTER" layoutX="271.0" layoutY="431.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="125.0" text="Delete" textAlignment="CENTER" textFill="#5f1378">
+				<Button fx:id="delete" alignment="CENTER" contentDisplay="CENTER" layoutX="271.0" layoutY="431.0" mnemonicParsing="false" onAction="#buttonPressed" opacity="0.8" prefHeight="35.0" prefWidth="125.0" text="Delete" textAlignment="CENTER" textFill="#5f1378">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Button fx:id="clear" alignment="CENTER" contentDisplay="CENTER" layoutX="443.0" layoutY="82.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="80.0" text="Clear" textAlignment="CENTER" textFill="#5f1378">
+            <Button fx:id="clear" alignment="CENTER" contentDisplay="CENTER" layoutX="443.0" layoutY="82.0" mnemonicParsing="false" onAction="#buttonPressed" opacity="0.8" prefHeight="35.0" prefWidth="80.0" text="Clear" textAlignment="CENTER" textFill="#5f1378">
                <font>
                   <Font size="15.0" />
                </font>

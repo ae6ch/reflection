@@ -11,7 +11,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <StackPane prefHeight="480.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ResetPasswordController">
    <children>
       <ImageView fitHeight="480.0" fitWidth="650.0" opacity="0.35">
@@ -27,7 +26,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Text>
-				<Button fx:id="changePasswordButton" layoutX="172.0" layoutY="386.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="150.0" text="Change Password" textFill="#5f1378">
+				<Button fx:id="changePasswordButton" layoutX="172.0" layoutY="386.0" mnemonicParsing="false" onAction="#buttonPressed" opacity="0.8" prefHeight="35.0" prefWidth="150.0" text="Change Password" textFill="#5f1378">
                <font>
                   <Font size="15.0" />
                </font>
@@ -52,22 +51,22 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Text>
-				<PasswordField fx:id="currentPasswordField" layoutX="293.0" layoutY="164.0" prefHeight="27.0" prefWidth="216.0" />
-				<PasswordField fx:id="newPasswordField" layoutX="293.0" layoutY="194.0" prefHeight="27.0" prefWidth="216.0" />
-				<PasswordField fx:id="confirmPasswordField" layoutX="293.0" layoutY="223.0" prefHeight="27.0" prefWidth="216.0" />
+				<PasswordField fx:id="currentPasswordField" layoutX="293.0" layoutY="164.0" opacity="0.8" prefHeight="27.0" prefWidth="216.0" />
+				<PasswordField fx:id="newPasswordField" layoutX="293.0" layoutY="194.0" opacity="0.8" prefHeight="27.0" prefWidth="216.0" />
+				<PasswordField fx:id="confirmPasswordField" layoutX="293.0" layoutY="223.0" opacity="0.8" prefHeight="27.0" prefWidth="216.0" />
 				<Text fx:id="securityAnswerText" fill="#5f1378" layoutX="95.0" layoutY="319.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer" visible="true">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Text>
-				<PasswordField fx:id="securityAnswerField" layoutX="293.0" layoutY="299.0" prefHeight="27.0" prefWidth="216.0" visible="true" />
-				<TextField fx:id="securityQuestionField" layoutX="293.0" layoutY="260.0" prefHeight="27.0" prefWidth="216.0" visible="true" />
-				<Button fx:id="cancelButton" layoutX="359.0" layoutY="386.0" mnemonicParsing="false" onAction="#buttonPressed" prefHeight="35.0" prefWidth="150.0" text="Cancel" textFill="#5f1378">
+				<PasswordField fx:id="securityAnswerField" layoutX="293.0" layoutY="299.0" opacity="0.8" prefHeight="27.0" prefWidth="216.0" visible="true" />
+				<TextField fx:id="securityQuestionField" layoutX="293.0" layoutY="260.0" opacity="0.8" prefHeight="27.0" prefWidth="216.0" visible="true" />
+				<Button fx:id="cancelButton" layoutX="359.0" layoutY="386.0" mnemonicParsing="false" onAction="#buttonPressed" opacity="0.8" prefHeight="35.0" prefWidth="150.0" text="Cancel" textFill="#5f1378">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Label fx:id="errorMessage" alignment="CENTER" layoutX="50.0" layoutY="91.0" prefHeight="27.0" prefWidth="550.0" textAlignment="CENTER" textFill="#ff1616">
+            <Label fx:id="errorMessage" alignment="CENTER" contentDisplay="CENTER" layoutX="50.0" layoutY="91.0" prefHeight="27.0" prefWidth="550.0" textAlignment="CENTER" textFill="#ff1616">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>

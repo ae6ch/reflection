@@ -27,15 +27,15 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Text>
-      				<TextField fx:id="passwordField" layoutX="237.0" layoutY="171.0">
+      				<TextField fx:id="passwordField" layoutX="237.0" layoutY="171.0" opacity="0.8">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font></TextField>
-      				<Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" layoutX="408.0" layoutY="167.0" mnemonicParsing="false" onAction="#loginButtonPressed" prefHeight="35.0" prefWidth="80.0" text="Login" textAlignment="CENTER" textFill="#5f1278">
+      				<Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" layoutX="408.0" layoutY="167.0" mnemonicParsing="false" onAction="#loginButtonPressed" opacity="0.8" prefHeight="35.0" prefWidth="80.0" text="Login" textAlignment="CENTER" textFill="#5f1278">
                <font>
                   <Font size="15.0" />
                </font></Button>
-      				<Button fx:id="resetPasswordButton" layoutX="235.0" layoutY="276.0" mnemonicParsing="false" onAction="#resetButtonPressed" prefHeight="40.0" prefWidth="180.0" text="Reset My Password" textFill="#5f1278">
+      				<Button fx:id="resetPasswordButton" layoutX="235.0" layoutY="276.0" mnemonicParsing="false" onAction="#resetButtonPressed" opacity="0.8" prefHeight="40.0" prefWidth="180.0" text="Reset My Password" textFill="#5f1278">
                <font>
                   <Font size="15.0" />
                </font></Button>
@@ -52,7 +52,7 @@
                   </RadialGradient>
                </stroke>
             </Text>
-            <Label fx:id="errorMessage" alignment="CENTER" layoutX="46.0" layoutY="90.0" prefHeight="27.0" prefWidth="550.0" textAlignment="CENTER" textFill="#ff1616">
+            <Label fx:id="errorMessage" alignment="CENTER" contentDisplay="CENTER" layoutX="46.0" layoutY="90.0" prefHeight="27.0" prefWidth="550.0" textFill="#ff1616">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
