@@ -1,0 +1,159 @@
+@startuml application.png
+package application {
+
+    class Database {
+        DB_FILE
+        DB_URL
+        DRIVER_CLASS
+        c
+        db
+        dbConnection
+        sqlCommand
+        databaseOpen()
+        getConnection()
+        getDatabase()
+        sqlException()
+    }
+    class JournalEntry {
+        content
+        date
+        id
+        title
+        getContent()
+        getDate()
+        getId()
+        getTimeInSeconds()
+        getTitle()
+        setContent()
+        setDate()
+        setTitle()
+    }
+    class JournalEntryController {
+        body
+        bodyField
+        control
+        date
+        dateStamp
+        entryToEdit
+        errorMessage
+        localDateTime
+        sqlCommand
+        time
+        timeInSeconds
+        timeStamp
+        title
+        titleField
+        buttonPressed()
+        initialize()
+        setEntryToEdit()
+        storeEntry()
+    }
+    class LoginController {
+        control
+        errorMessage
+        firstlaunch
+        passwordField
+        pwd
+        question
+        sqlCommand
+        loginButtonPressed()
+        resetButtonPressed()
+    }
+    class Main {
+        loginFxml
+        loginScene
+        main()
+        start()
+    }
+    class MenuController {
+        control
+        buttonPressed()
+    }
+    class ResetPasswordController {
+        changepwd
+        confirmPasswordField
+        control
+        currentPasswordField
+        currentPasswordText
+        errorMessage
+        newPasswordField
+        securityAnswerField
+        securityAnswerText
+        securityQuestionField
+        securityQuestionText
+        sqlCommand
+        buttonPressed()
+        checkPasswordRules()
+        initialize()
+        setChangepwd()
+        storePassword()
+    }
+    class SceneController {
+        root
+        scene
+        changeScene()
+        changeScene()
+    }
+    class SearchController {
+        control
+        dateCol
+        entries
+        errorMessage
+        fromDate
+        resultsList
+        sqlCommand
+        textSearch
+        titleCol
+        toDate
+        buttonPressed()
+        initialize()
+        search()
+    }
+    class SecurityQuestionAnswerController {
+        control
+        errorMessage
+        securityAnswerField
+        securityQuestionField
+        sqlCommand
+        buttonPressed()
+        checkAnswer()
+        initialize()
+    }
+    class SqlDal {
+        content
+        date
+        entries
+        id
+        rs
+        sql
+        sqlstmt
+        title
+        value
+        createTables()
+        deleteEntry()
+        insertEntry()
+        parseResultSet()
+        searchEntries()
+        selectConfigValue()
+        selectConfigValueHelper()
+        storePassword()
+        updateEntry()
+    }
+}
+
+Database "1" *-->  "1" Database : db
+Database "1" *--> "1" SqlDal : sqlCommand 
+JournalEntryController "1" *--> "1" SceneController : control
+LoginController "1" *--> "1" SceneController : control
+Application <|- Main
+Main "1" *--> "1" Scene : loginScene
+MenuController "1" *--> "1" SceneController : control
+ResetPasswordController "1" *--> "1" SceneController  : control
+SceneController "1" *--> "1" Scene : scene
+SearchController "1" *-->  "1"SceneController : control
+SearchController "1" *--> "0..*" ArrayList : entries
+SecurityQuestionAnswerController "1" *--> "1" SceneController : control
+SqlDal "1" *--> "0..*" ArrayList : entries
+hide empty members
+
+@enduml
