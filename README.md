@@ -4,7 +4,7 @@
 Reflection is a java app to implemenet a simple blog.  
 
 Developement Team:
-Joshua Medina
-Aden Mengistie
-Anh Nguyen
-Steve Rubin
+Joshua Medina  
+Aden Mengistie  
+Anh Nguyen  
+Steve Rubin <ser@ieee.org>  
