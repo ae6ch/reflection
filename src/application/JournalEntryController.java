@@ -87,9 +87,13 @@ public class JournalEntryController {
 	 * @param e event
 	 */
 	public void buttonPressed(Event e) {
+		String inputValue = null;
+		
 		switch (((Control) e.getSource()).getId()) {
 			case "save":
-				if (bodyField.getHtmlText().length() > 72) { // 72 is the length of the default html text
+				inputValue = bodyField.getHtmlText().replaceAll("\\<.*?\\>", ""); // Strips out html tags
+				
+				if (!inputValue.equals("")) { // Verifies that is value for journal content
 					storeEntry();
 					entryToEdit = null; // Clear entryToEdit
 					control.changeScene(e, "mainmenu.fxml");
